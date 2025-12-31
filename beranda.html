@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Premium Official Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #111111;
+            --accent-color: #ff3b30;
+            --text-main: #ffffff;
+            --text-muted: #999999;
+            --border-color: #222222;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        /* Base Setup */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: var(--font-sans); 
+            padding-bottom: 100px; 
+            overflow-x: hidden;
+            padding-top: 100px;
+        }
+
+        /* Ambient Background Glow */
+        body::before {
+            content: ''; position: fixed; top: -5%; left: -5%; width: 40%; height: 40%;
+            background: radial-gradient(circle, rgba(255, 59, 48, 0.07) 0%, transparent 70%);
+            z-index: -1; pointer-events: none;
+        }
+
+        header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 86px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        .main-content { padding: 0 18px; }
+
+        /* Infinite Slider Slim */
+        .banner-container { 
+            margin-bottom: 22px; width: 100%; height: 160px; 
+            overflow: hidden; border-radius: 14px; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .slider-wrapper { display: flex; width: 100%; height: 100%; }
+        .slide { min-width: 100%; height: 100%; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Marquee */
+        .marquee-box {
+            background: var(--card-color); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 10px 15px; margin-bottom: 25px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .marquee-box i { color: var(--accent-color); font-size: 16px; }
+        marquee { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+        /* Menu Grid with Shimmer Icons */
+        .menu-wrapper {
+            background: var(--card-color); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 25px 10px; margin-bottom: 30px;
+        }
+        .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); row-gap: 22px; }
+        .menu-item { text-align: center; text-decoration: none; display: block; }
+        
+        .icon-wrap {
+            width: 48px; height: 48px; background: #1a1a1a; border: 1px solid #282828;
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 8px; color: var(--accent-color); font-size: 22px;
+            position: relative; overflow: hidden; transition: 0.3s;
+        }
+
+        /* Ikon Shimmer Effect */
+        .icon-wrap::after {
+            content: ''; position: absolute; top: -50%; left: -150%; width: 60%; height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(30deg); animation: shimmerIcon 5s infinite;
+        }
+
+        @keyframes shimmerIcon {
+            0% { left: -150%; }
+            20% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        /* Sequential delays for menu shimmer */
+        .menu-item:nth-child(odd) .icon-wrap::after { animation-delay: 1s; }
+        .menu-item:nth-child(even) .icon-wrap::after { animation-delay: 2.5s; }
+
+        .menu-item span { font-size: 10px; color: var(--text-muted); font-weight: 600; }
+
+        /* Section Title (Ikon + Teks Klasik Kecil) */
+        .section-title { display: flex; justify-content: space-between; margin-bottom: 18px; align-items: center; }
+        .title-group { display: flex; align-items: center; gap: 8px; }
+        .section-title h3 { 
+          font-size: 15px; font-weight: 600; color: #fff; }
+        .section-title a { font-size: 10px; color: var(--accent-color); text-decoration: none; font-weight: 600; }
+
+.task-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 var(--side-margin);
+        }
+
+        .video-card {
+            background: var(--card-color);
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 5px;
+        }
+
+        .thumb-container {
+            width: 100%;
+            height: 115px; 
+            background-color: #1a1a1a;
+            position: relative;
+        }
+
+        .thumb-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .views-badge {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.7);
+            padding: 3px 7px;
+            border-radius: 6px;
+            font-size: 9px;
+            backdrop-filter: blur(4px);
+        }
+
+        .video-info { padding: 12px; }
+        .video-info h4 { font-size: 12px; font-weight: 700; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .stars { color: var(--accent-color); font-size: 8px; margin-bottom: 12px; display: flex; gap: 2px; }
+
+        /* TOMBOL TONTON KLASIK */
+        .btn-watch {
+            width: 100%;
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 10px 0;
+            border-radius: 10px;
+            font-size: 14px; 
+            font-weight: 700;
+            font-family: var(--font-serif); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        @keyframes shimmerBtn {
+            0% { left: -70%; }
+            25% { left: 130%; }
+            100% { left: 130%; }
+        }
+
+        /* Bottom Navigation */
+        /* --- NAVBAR BAWAH STYLE ABANG (LEBIH TEGAS) --- */
+.bottom-nav { 
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    background: #0a0a0a; 
+    border-top: 1px solid #151515; 
+    display: flex; 
+    padding: 10px 0 15px; /* Tinggi standar yang nyaman */
+    z-index: 1000; 
+}
+
+.nav-link { 
+    flex: 1; 
+    text-align: center; 
+    text-decoration: none; 
+    color: #666; /* Warna saat tidak aktif */
+    font-size: 10px; 
+    font-weight: 500; /* Ketebalan standar */
+}
+
+/* KHUSUS SAAT AKTIF: TEKS TEBAL & WARNA TERANG */
+.nav-link.active { 
+    color: #ff3b30; /* Warna merah solid */
+}
+
+.nav-link.active span {
+    font-weight: 800; /* Teks jadi sangat tebal */
+    font-size: 11px;  /* Sedikit lebih besar agar menonjol */
+}
+
+.nav-link i { 
+    font-size: 24px; 
+    display: block; 
+    margin-bottom: 4px; 
+    transition: 0.2s;
+}
+
+.nav-link.active i {
+    color: #ff3b30; /* Ikon juga jadi merah terang */
+}
+    </style>
+</head>
+<body>
+
+    <header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+  <style>
+    /* Kontainer Utama (Overlay) */
+    #welcomePopup {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.4); /* Background web tetap terlihat transparan */
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 100000;
+        opacity: 0; visibility: hidden;
+        transition: all 0.5s ease-in-out;
+    }
+
+    /* Box Pop-up (Tanpa Border, Pakai Shadow) */
+    #popupContent {
+        width: 90%; max-width: 360px; 
+        background: #111; 
+        border-radius: 25px; /* Sudut lebih membulat biar modern */
+        overflow: hidden; 
+        position: relative;
+        /* BOX SHADOW: Halus dan dalam agar terlihat mewah */
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.4);
+        transform: scale(0.8) translateY(50px);
+        opacity: 0;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ANIMASI SAAT MUNCUL */
+    .show-popup {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    .show-popup #popupContent {
+        transform: scale(1) translateY(0) !important;
+        opacity: 1 !important;
+    }
+
+    /* ANIMASI SAAT TUTUP (PASTI LEMBUT) */
+    .hide-popup {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.5s ease-in-out !important;
+    }
+    .hide-popup #popupContent {
+        transform: scale(0.8) translateY(60px) !important; /* Meluncur turun & mengecil */
+        opacity: 0 !important;
+        transition: all 0.5s ease-in-out !important;
+    }
+</style>
+
+<div id="welcomePopup">
+    <div id="popupContent">
+        <div style="width: 100%; position: relative; line-height: 0; background: #000;">
+            <img src="movie3.jpg" style="width: 100%; height: auto; display: block; object-fit: contain;">
+            
+            <div onclick="closeWelcomePopup()" style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10;">
+                <i class="ri-close-line" style="font-size: 20px;"></i>
+            </div>
+        </div>
+
+        <div style="padding: 25px 20px 30px; text-align: center;">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 12px; color: #fff; letter-spacing: 1px; font-weight: 800;">VisionPay Untuk Anda!</h2>
+            <div style="width: 245px; height: 2px; background: #ff3b30; margin: 0 auto 15px;"></div>
+            <p style="font-size: 13px; color: #ccc; line-height: 1.7; margin-bottom: 25px; font-family: 'Montserrat', sans-serif;">
+                Selamat datang di era baru hiburan digital. Nikmati akses <span style="color: #ff3b30; font-weight: 700;">VisionPay</span> dan mulailah membangun aset pendapatan harian Anda.
+            </p>
+
+            <button onclick="closeWelcomePopup()" style="position: relative; overflow: hidden; background: linear-gradient(135deg, #ff3b30, #b0261f); color: #fff; border: none; width: 100%; padding: 15px 0; border-radius: 14px; font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(255, 59, 48, 0.2);">
+                Mulai Sekarang
+                <div style="position: absolute; top: -50%; left: -70%; width: 30%; height: 200%; background: rgba(255, 255, 255, 0.2); transform: rotate(30deg); animation: shimmerBtnPopup 3s infinite;"></div>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Logic Muncul
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.getElementById('welcomePopup').classList.add('show-popup');
+        }, 500);
+    });
+
+    // Logic Tutup Lembut
+    function closeWelcomePopup() {
+        const popup = document.getElementById('welcomePopup');
+        popup.classList.remove('show-popup');
+        popup.classList.add('hide-popup');
+        
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 500);
+    }
+</script>
+    <div class="main-content">
+<div class="banner-container">
+            <div class="slider-wrapper" id="slider">
+                <div class="slide"><img src="movie1.jpg"></div>
+                <div class="slide"><img src="movie2.jpg"></div>
+                <div class="slide"><img src="movie3.jpg"></div>
+                <div class="slide"><img src="movie1.jpg"></div>
+            </div>
+            
+            <div class="dots-container" style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
+                <div class="dot active" style="width: 14px; height: 5px; background: var(--accent-color); border-radius: 10px; transition: 0.3s; box-shadow: 0 0 8px var(--accent-color);"></div>
+                <div class="dot" style="width: 5px; height: 5px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s;"></div>
+                <div class="dot" style="width: 5px; height: 5px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s;"></div>
+            </div>
+        </div>
+
+        <div class="marquee-box">
+            <i class="ri-megaphone-line"></i>
+            <marquee scrollamount="4">Dapatkan bonus referal 10% untuk setiap anggota baru yang bergabung melalui kode Anda!</marquee>
+        </div>
+
+        <div class="menu-wrapper">
+            <div class="menu-grid">
+                <a href="deposit.html" class="menu-item"><div class="icon-wrap"><i class="ri-wallet-3-line"></i></div><span>Isi Saldo</span></a>
+                <a href="penarikan.html" class="menu-item"><div class="icon-wrap"><i class="ri-arrow-up-circle-line"></i></div><span>Tarik Tunai</span></a>
+                <a href="#" class="menu-item"><div class="icon-wrap"><i class="ri-download-2-line"></i></div><span>Unduh App</span></a>
+                <a href="team.html" class="menu-item"><div class="icon-wrap"><i class="ri-group-line"></i></div><span>Tim Saya</span></a>
+                <a href="bank.html" class="menu-item"><div class="icon-wrap"><i class="ri-bank-line"></i></div><span>Rekening</span></a>
+                <a href="gift.html" class="menu-item"><div class="icon-wrap"><i class="ri-copper-coin-line"></i></div><span>Tukar Kode</span></a>
+                <a href="panduan.html" class="menu-item"><div class="icon-wrap"><i class="ri-question-line"></i></div><span>Panduan</span></a>
+                <a href="undang.html" class="menu-item"><div class="icon-wrap"><i class="ri-share-line"></i></div><span>Undang</span></a>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <div class="title-group">
+                <i class="ri-briefcase-4-line" style="color: var(--accent-color); font-size: 16px;"></i>
+                <h3>Film Populer</h3>
+            </div>
+            <a href="film.html">Lihat semua</a>
+        </div>
+
+        <div class="task-grid" id="popularGrid">
+    </div>
+
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-link active"><i class="ri-home-5-line"></i><span>Beranda</span></a>
+        <a href="vip.html" class="nav-link"><i class="ri-vip-crown-line"></i><span>VIP Plan</span></a>
+        <a href="film.html" class="nav-link"><i class="ri-video-line"></i><span>Film</span></a>
+        <a href="profil.html" class="nav-link"><i class="ri-user-3-line"></i><span>Profil</span></a>
+    </nav>
+
+  <script>
+        const slider = document.getElementById('slider');
+        const dots = document.querySelectorAll('.dot');
+        const totalImages = 3;
+        let counter = 0;
+
+        function updateDots(index) {
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+                dot.style.width = "5px";
+                dot.style.borderRadius = "50%";
+                dot.style.background = "rgba(255,255,255,0.3)";
+                dot.style.boxShadow = "none";
+            });
+            
+            const activeDot = dots[index % totalImages];
+            activeDot.style.width = "14px";
+            activeDot.style.borderRadius = "10px";
+            activeDot.style.background = "var(--accent-color)";
+            activeDot.style.boxShadow = "0 0 8px var(--accent-color)";
+        }
+
+        function performSlide() {
+            counter++;
+            slider.style.transition = "transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)";
+            slider.style.transform = `translateX(${-100 * counter}%)`;
+            
+            updateDots(counter);
+
+            if (counter >= totalImages) {
+                setTimeout(() => {
+                    slider.style.transition = "none";
+                    counter = 0;
+                    slider.style.transform = `translateX(0%)`;
+                }, 700);
+            }
+        }
+
+        setInterval(performSlide, 4000);
+    </script>
+    <script>
+    const dataFilm = [
+        {id: "43R9l7EkJwE", title: "Predator: Badlands (2025) - Misi Terakhir Sang Pemburu Legendaris Di Planet Terlarang"},
+        {id: "m08TxIsFTRI", title: "Project Hail Mary (2025) - Perjalanan Antariksa Menyelamatkan Peradaban Manusia Dari Kepunahan"},
+        {id: "KD18ddeFuyM", title: "The Running Man (2025) - Turnamen Maut Masa Depan Menegangkan Karya Edgar Wright & Glen Powell"},
+        {id: "-w2zkCsxbqc", title: "The Savant Official (2025) - Konspirasi Jenius Jessica Chastain Dalam Ungkap Kejahatan Cyber"},
+        {id: "auTrAbZYFS8", title: "Prometheus: Reborn - Kebangkitan Sang Pencipta Dan Rahasia Kuno Di Balik Terciptanya Manusia"},
+        {id: "H8ieN10lX40", title: "Greenland: Migration (2026) - Kelangsungan Hidup Keluarga Gerard Butler Di Tengah Badai Kiamat"},
+        {id: "aqz-KE-bpKQ", title: "The Dark Knight - Pertempuran Ikonik Batman Melawan Joker Demi Keadilan Di Kota Gotham"},
+        {id: "YoHD9XEInc0", title: "Inception Movie - Manipulasi Mimpi Dan Pencurian Informasi Rahasia Di Dalam Alam Bawah Sadar"},
+        {id: "EXeTwQWrcwY", title: "The Batman 2022 - Sisi Gelap Bruce Wayne Dalam Mengungkap Korupsi Besar Besaran Di Gotham"},
+        {id: "6ZfuNTqbHE8", title: "Avengers Endgame - Perjuangan Terakhir Pahlawan Terkuat Bumi Melawan Kekuatan Thanos"},
+        {id: "JfVOs4VSpmA", title: "Spider-Man No Way Home - Pertemuan Multiverse Paling Epik Dalam Sejarah Pahlawan Super"},
+        {id: "uYPbbksJxIg", title: "Oppenheimer Special - Sejarah Di Balik Terciptanya Bom Atom Dan Penyesalan Sang Ilmuwan Besar"},
+        {id: "ByAn8DF8Ykk", title: "Interstellar Journey - Penjelajahan Lubang Cacing Demi Mencari Planet Baru Bagi Umat Manusia"},
+        {id: "shW9i6k8cB0", title: "Deadpool & Wolverine - Aliansi Paling Rusuh Dan Kocak Dalam Menyelamatkan Timeline Marvel"},
+        {id: "d9MyW72ELq0", title: "Furiosa Mad Max Saga - Kisah Masa Lalu Sang Pejuang Wanita Di Gurun Pasir Yang Ganas"},
+        {id: "Go8nTmfrQd8", title: "Shang-Chi Action - Kekuatan Sepuluh Cincin Dan Legenda Tersembunyi Dari Kerajaan Kuno"},
+        {id: "8Qn_spdM5Zg", title: "Cyberpunk Night City - Aksi Peretasan Dan Pertempuran Tentara Bayaran Di Kota Masa Depan"},
+        {id: "Vsn7sVxCq1M", title: "Spider-Man: Brand New Day (2026) - Kembalinya Tom Holland Sebagai Pahlawan Kota New York"},
+        {id: "LpN3bYmGWJs", title: "Thor 5: The Battle Of Gods (2026) - Pertempuran Dewa Petir Menghadapi Ancaman Galaksi Terbaru"},
+        {id: "NQwDGFjGU7s", title: "Superman Official Trailer (2025) - Awal Mula Legenda Manusia Baja Karya James Gunn"}
+    ];
+
+    function renderBerandaVideos() {
+        const grid = document.getElementById('popularGrid');
+        // Acak dan ambil 6 video untuk beranda
+        const shuffled = dataFilm.sort(() => Math.random() - 0.5).slice(0, 6);
+        
+        let content = "";
+        shuffled.forEach((video) => {
+            // Logika Views Random sama persis dengan film.html
+            const randomViews = (Math.random() * (35 - 5) + 5).toFixed(1);
+            const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+
+            content += `
+                <div class="video-card" style="border-radius: 12px; overflow: hidden; background: #111; border: 1px solid #222; display: flex; flex-direction: column; margin-bottom: 0;">
+                    <div class="thumb-container" style="width: 100%; height: 110px; position: relative; overflow: hidden; background: #000;">
+                        <img src="${thumbUrl}" 
+                             style="position: absolute; width: 100%; height: 100%; object-fit: cover; transform: scale(1.35); top: 0; left: 0;"
+                             onerror="this.src='https://via.placeholder.com/480x270/111/fff?text=VisionPay'">
+                        
+                        <div class="views-badge" style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.8); padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; color: #fff; z-index: 10;">
+                            ${randomViews}K Views
+                        </div>
+                    </div>
+
+                    <div class="video-info" style="padding: 10px;">
+                        <h4 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12px; font-weight: 700; color: #fff; margin: 0 0 5px 0;">
+                            ${video.title}
+                        </h4>
+                        <div class="stars" style="color: #ff3b30; font-size: 8px; margin-bottom: 10px; display: flex; gap: 2px;">
+                            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+                        </div>
+                        <button class="btn-watch" 
+                                style="width: 100%; padding: 10px; border-radius: 8px; border: none; background: #ff3b30; color: #fff; font-weight: 700; font-size: 13px; font-family: 'Playfair Display', serif; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; text-transform: none;"
+                                onclick="location.href='play.html?v=${video.id}&title=${encodeURIComponent(video.title)}'">
+                            <i class="ri-play-circle-fill" style="font-size: 18px;"></i> Tonton
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        grid.innerHTML = content;
+    }
+
+    // Jalankan fungsi
+    renderBerandaVideos();
+</script>
+</body>
+</html>

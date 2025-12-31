@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VisionPay - Panduan Resmi Operasional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg: #000000;
+            --text-dim: #888;
+            --text-main: #a0a0a0;
+            --text-white: #ffffff;
+            --accent: #ff3b30;
+            --border: #181818;
+            --success: #34c759;
+            --warning: #ffcc00;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Montserrat', sans-serif; 
+            line-height: 1.8; 
+            padding-bottom: 80px;
+            font-size: 13px; /* Ukuran font ditingkatkan sedikit agar nyaman dibaca */
+        }
+
+        /* HEADER */
+        header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 10px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        .container { padding: 90px 20px 40px 20px; max-width: 750px; margin: 0 auto; }
+
+        /* HERO AREA */
+        .hero-section { margin-bottom: 45px; border-bottom: 1px solid var(--border); padding-bottom: 25px; }
+        .hero-section span { color: var(--accent); font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; display: block; margin-bottom: 10px; }
+        .hero-section h2 { font-size: 24px; color: #fff; font-weight: 700; line-height: 1.3; }
+
+        /* CONTENT BLOCK */
+        .section-block { margin-bottom: 60px; }
+        .section-header { 
+            font-size: 16px; font-weight: 700; color: #fff; 
+            margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+        }
+        .section-header i { color: var(--accent); font-size: 22px; }
+
+        .narrative-text { text-align: justify; }
+        .narrative-text p { margin-bottom: 20px; }
+        .narrative-text strong { color: #fff; font-weight: 600; }
+
+        /* RAMPING TABLE (COMPACT) */
+        .table-container { 
+            width: 100%; overflow-x: auto; margin: 25px 0; 
+            border-radius: 12px; border: 1px solid var(--border); background: #050505;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 10.5px; min-width: 500px; }
+        th { background: #0a0a0a; color: var(--accent); font-weight: 700; padding: 14px 10px; text-align: left; border-bottom: 1px solid var(--border); text-transform: uppercase; }
+        td { padding: 14px 10px; border-bottom: 1px solid var(--border); color: #ccc; }
+        
+        .lvl-tag { font-weight: 700; color: #fff; font-size: 11px; }
+        .price-tag { color: var(--success); font-weight: 600; }
+        .profit-tag { color: var(--warning); font-weight: 700; }
+
+        /* INFO HIGHLIGHT */
+        .callout-box {
+            background: #080808; border: 1px solid var(--border);
+            padding: 20px; border-radius: 16px; margin: 25px 0;
+            border-left: 4px solid var(--accent);
+        }
+        .callout-box.promo { border-left-color: var(--warning); }
+        .callout-box h4 { font-size: 14px; color: #fff; margin-bottom: 8px; font-weight: 700; }
+        .callout-box p { font-size: 12px; color: #888; margin-bottom: 0; line-height: 1.8; }
+
+        .footer-branding { text-align: center; font-size: 10px; color: #444; margin-top: 60px; border-top: 1px solid var(--border); padding-top: 30px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+
+    <div class="container">
+        
+        <div class="hero-section">
+            <span>Official Guidelines 2025</span>
+            <h2>Protokol Ekosistem &<br>Manajemen Laba VisionPay</h2>
+        </div>
+
+        <section class="section-block">
+            <h2 class="section-header"><i class="ri-instance-line"></i> I. Lisensi Operasional & Aktivasi</h2>
+            <div class="narrative-text">
+                <p>Dalam ekosistem ekonomi digital VisionPay, setiap mitra diwajibkan memiliki lisensi operasional yang sah sebagai bentuk otoritas untuk memproses data periklanan video dari mitra global kami. Lisensi keanggotaan mulai dari <strong>V1 hingga V7</strong> merupakan kontrak kerja digital yang memiliki masa berlaku selama <strong>360 hari kalender</strong> sejak tanggal aktivasi dilakukan.</p>
+                
+                <p>Tingkat lisensi yang Anda pilih secara langsung menentukan kapasitas harian dalam menghasilkan laba. Semakin tinggi tingkat V yang Anda operasikan, semakin besar alokasi tugas video yang diberikan oleh sistem. Seluruh pendapatan harian akan langsung dikreditkan ke saldo akun Anda secara real-time setelah validasi tugas selesai dilakukan.</p>
+
+                <div class="callout-box promo">
+                    <h4>Program Subsidi & Flash Promo</h4>
+                    <p>Untuk mendukung percepatan modal bagi mitra, VisionPay memberikan <strong>Bonus Saldo 8%</strong> untuk setiap deposit aktivasi secara reguler. Namun, pada periode <strong>Flash Promo</strong> tertentu, perusahaan dapat meningkatkan bonus ini menjadi <strong>10%</strong> secara otomatis sesuai dengan kebijakan manajemen yang berlaku saat itu.</p>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tingkat Level</th>
+                                <th>Harga Lisensi</th>
+                                <th>Kuota Tugas</th>
+                                <th>Profit/Hari</th>
+                                <th>Estimasi/Tahun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="lvl-tag">MAGANG</td><td class="price-tag">Gratis</td><td>3 Video</td><td class="profit-tag">Rp 15.000</td><td>Masa Percobaan</td></tr>
+                            <tr><td class="lvl-tag">V1</td><td class="price-tag">Rp 320.000</td><td>3 Video</td><td class="profit-tag">Rp 15.000</td><td>Rp 5.400.000</td></tr>
+                            <tr><td class="lvl-tag">V2</td><td class="price-tag">Rp 780.000</td><td>5 Video</td><td class="profit-tag">Rp 35.000</td><td>Rp 12.600.000</td></tr>
+                            <tr><td class="lvl-tag">V3</td><td class="price-tag">Rp 1.820.000</td><td>8 Video</td><td class="profit-tag">Rp 72.000</td><td>Rp 25.920.000</td></tr>
+                            <tr><td class="lvl-tag">V4</td><td class="price-tag">Rp 3.290.000</td><td>12 Video</td><td class="profit-tag">Rp 168.000</td><td>Rp 60.480.000</td></tr>
+                            <tr><td class="lvl-tag">V5</td><td class="price-tag">Rp 8.250.000</td><td>20 Video</td><td class="profit-tag">Rp 400.000</td><td>Rp 144.000.000</td></tr>
+                            <tr><td class="lvl-tag">V6</td><td class="price-tag">Rp 20.150.000</td><td>30 Video</td><td class="profit-tag">Rp 960.000</td><td>Rp 345.600.000</td></tr>
+                            <tr><td class="lvl-tag">V7</td><td class="price-tag">Rp 50.450.000</td><td>45 Video</td><td class="profit-tag">Rp 2.475.000</td><td>Rp 891.000.000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-block">
+            <h2 class="section-header"><i class="ri-team-line"></i> II. Struktur Insentif Jaringan Tim</h2>
+            <div class="narrative-text">
+                <p>VisionPay sangat menghargai kontribusi mitra dalam mengembangkan ekosistem melalui program rujukan. Kami memisahkan dua skema keuntungan jaringan agar tercipta transparansi pendapatan bagi setiap pemimpin tim:</p>
+                
+                <p><strong>1. Bonus Komisi Aktivasi (Instan):</strong><br>
+                Merupakan bonus satu kali yang diberikan secara instan setiap kali anggota di dalam jaringan Anda melakukan pembelian atau upgrade lisensi kerja (V1-V7). Besaran bonus adalah:<br>
+                • Mitra Level 1: <strong>10%</strong> dari nilai aktivasi.<br>
+                • Mitra Level 2: <strong>4%</strong> dari nilai aktivasi.<br>
+                • Mitra Level 3: <strong>1%</strong> dari nilai aktivasi.</p>
+
+                <p><strong>2. Rabat Dividen Tugas (Harian):</strong><br>
+                Merupakan pendapatan pasif harian yang dihasilkan dari produktivitas tim Anda dalam menyelesaikan tugas menonton video. Rabat ini akan masuk otomatis ke saldo Anda setiap hari tanpa mengurangi pendapatan anggota tim tersebut:<br>
+                • Rabat Level 1: <strong>4%</strong> dari pendapatan harian tim.<br>
+                • Rabat Level 2: <strong>3%</strong> dari pendapatan harian tim.<br>
+                • Rabat Level 3: <strong>2%</strong> dari pendapatan harian tim.</p>
+                
+                <p>Kombinasi kedua skema ini memungkinkan seorang mitra untuk membangun arus pendapatan yang stabil dan berkelanjutan seiring dengan pertumbuhan jaringan tim di bawahnya.</p>
+            </div>
+        </section>
+
+        <section class="section-block">
+            <h2 class="section-header"><i class="ri-bank-card-line"></i> III. Kebijakan Penarikan Dana</h2>
+            <div class="narrative-text">
+                <p>Kami menjamin keamanan dan kelancaran likuiditas saldo setiap mitra melalui sistem pembayaran yang terintegrasi. Seluruh akumulasi pendapatan, baik dari tugas pribadi maupun komisi jaringan, dapat ditarik ke rekening bank yang terdaftar di aplikasi.</p>
+                
+                <div class="callout-box">
+                    <h4>Ketentuan Withdrawal (WD)</h4>
+                    <p>Minimal nominal penarikan adalah <strong>Rp 50.000</strong>. Guna menjaga stabilitas pajak penghasilan dan biaya pemeliharaan sistem, setiap transaksi penarikan dikenakan potongan administratif sebesar <strong>10%</strong>. Estimasi waktu saldo masuk ke rekening tujuan berkisar antara 5 hingga 30 menit.</p>
+                </div>
+                <p>Sangat penting bagi setiap mitra untuk memastikan bahwa nama pada rekening bank tujuan harus identik dengan nama pada profil akun VisionPay. Hal ini diperlukan untuk proses verifikasi keamanan dan mencegah segala bentuk penyalahgunaan akun.</p>
+            </div>
+        </section>
+
+        <section class="section-block">
+            <h2 class="section-header"><i class="ri-gift-line"></i> IV. Kode Promo & Histori Transaksi</h2>
+            <div class="narrative-text">
+                <p>Manajemen VisionPay secara rutin mendistribusikan <strong>Kode Promo Terbatas</strong> sebagai bentuk apresiasi kepada mitra loyal. Kode ini dapat diklaim melalui menu pusat bonus untuk mendapatkan tambahan saldo tunai. Untuk menjaga akuntabilitas, seluruh rincian saldo masuk (Bonus Aktivasi, Rabat Tugas, dan Hadiah Promo) dapat dipantau secara mandiri melalui menu <strong>Catatan transaksi</strong> pada tab <strong>Lainnya</strong>.</p>
+            </div>
+        </section>
+
+        <footer class="footer-branding">
+            VISIONPAY FINANCIAL ECOSYSTEM © 2025<br>
+            STRICTLY PRIVATE AND CONFIDENTIAL
+        </footer>
+
+    </div>
+
+</body>
+</html>

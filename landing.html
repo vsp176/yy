@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VisionPay - Official Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg: #000000;
+            --accent: #ff3b30;
+            --card: #0d0d0d;
+            --text-muted: #777;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: var(--bg); 
+            color: #fff; 
+            font-family: 'Montserrat', sans-serif; 
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            background: radial-gradient(circle at center, #1a0505 0%, #000 100%);
+            position: relative;
+        }
+
+        /* EFEK ESTETIK LOGO */
+        .hero img {
+        height: 75px; /* Ukuran yang ideal, tidak kebesaran */
+        max-width: 80%; /* Menjaga agar tidak rapat ke kiri-kanan di layar kecil */
+        width: auto;
+        margin-bottom: 25px;
+        display: block;
+        opacity: 0;
+        transform: scale(0.85);
+        filter: blur(15px);
+        animation: logoEntrance 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Update teks di bawah logo agar lebih elegan */
+
+        @keyframes logoEntrance {
+            0% { opacity: 0; transform: scale(0.7); filter: blur(15px); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0); }
+        }
+
+            .hero p {
+        font-size: 10px;
+        color: var(--text-muted);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-weight: 600;
+        opacity: 0;
+        animation: fadeIn 1s ease forwards 1.3s;
+    }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scroll Hint */
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            text-align: center;
+            font-size: 10px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 2.5s;
+        }
+        
+        .scroll-hint i {
+            display: block;
+            font-size: 20px;
+            color: var(--accent);
+            margin-top: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-8px);}
+            60% {transform: translateY(-4px);}
+        }
+
+        /* Content Section */
+        .content-wrapper {
+            padding: 40px 22px 140px 22px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background: var(--card);
+            border: 1px solid #1a1a1a;
+            padding: 26px;
+            border-radius: 30px;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .info-card.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .info-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 19px;
+            margin-bottom: 15px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-card p {
+            font-size: 12.5px;
+            color: #aaa;
+            text-align: justify;
+            line-height: 1.8;
+        }
+
+        .terms-list { margin-top: 18px; list-style: none; }
+        .terms-list li {
+            font-size: 11.5px;
+            color: #888;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            line-height: 1.4;
+        }
+        .terms-list li i { color: var(--accent); font-size: 15px; flex-shrink: 0; }
+
+        /* Action Area */
+        .action-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 25px 45px;
+            background: linear-gradient(to top, #000 85%, transparent);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .action-area.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .btn-accept {
+            width: 100%;
+            max-width: 450px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 700;
+            box-shadow: 0 15px 45px rgba(255, 59, 48, 0.35);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-accept:active {
+            transform: scale(0.96);
+            background: #e6352b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+        <img src="logo.jpg" alt="VisionPay Logo" style="height: 75px; width: auto; object-fit: contain;">
+        
+        <p>Masa Depan Keuangan Digital</p>
+        
+        <div class="scroll-hint">
+            Pelajari Ketentuan Layanan
+            <i class="ri-arrow-down-s-line"></i>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        
+        <div class="info-card">
+            <h2><i class="ri-scales-3-line"></i> Protokol Pengguna</h2>
+            <p>VisionPay adalah platform eksklusif. Dengan masuk ke ekosistem kami, Anda wajib mematuhi standar keamanan dan etika transaksi yang telah ditetapkan.</p>
+            <ul class="terms-list">
+                <li><i class="ri-check-double-line"></i> Identitas wajib valid dan berusia di atas 18 tahun.</li>
+                <li><i class="ri-check-double-line"></i> Dilarang keras menggunakan data orang lain untuk pendaftaran.</li>
+                <li><i class="ri-check-double-line"></i> Sistem deteksi otomatis akan memblokir aktivitas mencurigakan.</li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h2><i class="ri-money-dollar-circle-line"></i> Regulasi Finansial</h2>
+            <p>Seluruh aset digital di dalam VisionPay dikelola melalui sistem terdesentralisasi yang transparan. Kecepatan transaksi tergantung pada paket VIP yang Anda miliki.</p>
+            <ul class="terms-list">
+                <li><i class="ri-check-double-line"></i> Deposit hanya diterima dari metode yang terverifikasi di aplikasi.</li>
+                <li><i class="ri-check-double-line"></i> Penarikan wajib diproses ke rekening yang sesuai nama profil.</li>
+                <li><i class="ri-check-double-line"></i> Waktu pemrosesan mengikuti antrian prioritas sistem.</li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h2><i class="ri-shield-check-line"></i> Keamanan Multi-Lapis</h2>
+            <p>Kami menjamin perlindungan saldo Anda dengan enkripsi end-to-end. Namun, keamanan akun tetap menjadi tanggung jawab penuh pemilik user ID.</p>
+            <ul class="terms-list">
+                <li><i class="ri-check-double-line"></i> Jangan pernah membagikan sandi atau PIN kepada siapapun.</li>
+                <li><i class="ri-check-double-line"></i> Kami tidak bertanggung jawab atas kelalaian keamanan pribadi.</li>
+                <li><i class="ri-check-double-line"></i> Layanan bantuan pelanggan tersedia melalui jalur VIP.</li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h2><i class="ri-file-info-line"></i> Persetujuan Akhir</h2>
+            <p>Dengan melanjutkan ke halaman pendaftaran, Anda menyatakan telah membaca, memahami, dan menyetujui seluruh mekanisme kerja platform VisionPay tanpa paksaan dari pihak manapun.</p>
+        </div>
+
+    </div>
+
+    <div class="action-area" id="actionArea">
+        <button class="btn-accept" onclick="location.href='daftar.html'">Setuju & Lanjutkan</button>
+    </div>
+
+    <script>
+        // Animasi Reveal saat Scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".info-card");
+            var windowHeight = window.innerHeight;
+
+            reveals.forEach(card => {
+                var elementTop = card.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    card.classList.add("reveal");
+                }
+            });
+
+            // Munculkan tombol saat mencapai bagian bawah (85%)
+            var actionArea = document.getElementById("actionArea");
+            var scrollPosition = window.innerHeight + window.scrollY;
+            var threshold = document.body.offsetHeight * 0.85;
+
+            if (scrollPosition >= threshold) {
+                actionArea.classList.add("visible");
+            } else {
+                actionArea.classList.remove("visible");
+            }
+        }
+
+        window.addEventListener("scroll", reveal);
+        // Jalankan saat load pertama kali
+        window.addEventListener("load", reveal);
+    </script>
+</body>
+</html>

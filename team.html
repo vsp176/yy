@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VisionPay - Tim Saya Multi-Level</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #111111;
+            --accent-color: #ff3b30;
+            --text-main: #ffffff;
+            --text-muted: #999999;
+            --border-color: #222222;
+            --side-margin: 18px; 
+            --font-main: 'Montserrat', sans-serif;
+            --font-title: 'Playfair Display', serif;
+        }
+
+        /* ANIMASI FADE IN UP 0.5s */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ANIMASI KHUSUS SAAT GANTI DATA */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: var(--font-main); padding-top: 86px; padding-bottom: 50px; }
+
+        header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 86px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        .main-content { padding: 0 var(--side-margin); width: 100%; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 22px; }
+        .stat-card {
+            background: var(--card-color); border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 20px 10px; display: flex; flex-direction: column; align-items: center;
+        }
+        .stat-card i { font-size: 20px; color: var(--accent-color); margin-bottom: 8px; }
+        .stat-val { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .stat-label { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+
+        .level-tabs {
+            display: flex; background: var(--card-color); padding: 5px; border-radius: 12px;
+            border: 1px solid var(--border-color); margin-bottom: 22px; gap: 5px;
+        }
+        .tab-btn {
+            flex: 1; padding: 12px 0; border-radius: 10px; border: none;
+            background: transparent; color: var(--text-muted); font-size: 11px; 
+            font-weight: 700; cursor: pointer; font-family: var(--font-main); transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--accent-color); color: #fff; }
+
+        .detail-wrapper { background: var(--card-color); border: 1px solid var(--border-color); border-radius: 14px; padding: 22px 20px; width: 100%; }
+        .detail-header { font-family: var(--font-title); font-size: 16px; font-weight: 700; margin-bottom: 20px; text-align: center; color: #fff; }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .info-box {
+            background: #0a0a0a; padding: 15px 5px; border-radius: 12px; border: 1px solid #1a1a1a;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .info-box .v { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .info-box .l { font-size: 9px; font-weight: 500; color: #666; }
+
+        .btn-view-team {
+            width: 100%; padding: 14px; background: transparent; border: 1px solid var(--border-color);
+            color: var(--text-muted); border-radius: 12px; font-size: 11px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+        }
+        .btn-view-team.active { border-color: var(--accent-color); color: #fff; }
+
+        .expand-container { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .expand-container.open { grid-template-rows: 1fr; }
+        .expand-content { overflow: hidden; }
+        .list-inner { padding-top: 20px; border-top: 1px solid #1a1a1a; margin-top: 20px; }
+
+        .search-box { position: relative; margin-bottom: 18px; }
+        .search-box input {
+            width: 100%; background: #080808; border: 1px solid #1a1a1a; padding: 12px 12px 12px 40px;
+            border-radius: 10px; color: #fff; font-size: 12px; font-family: var(--font-main); outline: none;
+        }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #444; }
+
+        .member-card { background: #0a0a0a; border-radius: 12px; padding: 16px; margin-bottom: 12px; border: 1px solid #1a1a1a; animation: fadeIn 0.4s ease; }
+        .member-info-top { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .member-name { font-size: 13px; font-weight: 700; color: #fff; }
+        .member-phone { font-size: 11px; color: var(--text-muted); }
+
+        .member-detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px dashed #1a1a1a; }
+        .detail-label { font-size: 11px; color: #666; font-weight: 500; }
+        .detail-value { font-size: 11px; color: #fff; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+
+<div class="main-content">
+    <div class="stats-grid fade-in-up delay-1">
+        <div class="stat-card">
+            <i class="ri-group-line"></i>
+            <span class="stat-val" id="total-member-count">3</span>
+            <span class="stat-label">Anggota tim</span>
+        </div>
+        <div class="stat-card">
+            <i class="ri-wallet-3-line"></i>
+            <span class="stat-val">Rp 120.500</span>
+            <span class="stat-label">Komisi tim</span>
+        </div>
+    </div>
+
+    <div class="level-tabs fade-in-up delay-2">
+        <button class="tab-btn active" onclick="switchLevel(1, this)">Level 1</button>
+        <button class="tab-btn" onclick="switchLevel(2, this)">Level 2</button>
+        <button class="tab-btn" onclick="switchLevel(3, this)">Level 3</button>
+    </div>
+
+    <div class="detail-wrapper fade-in-up delay-3">
+        <div class="detail-header" id="levelTitle">Detail tim Level 1</div>
+        <div class="info-grid">
+            <div class="info-box"><span class="v" id="box-count">1</span><span class="l">Jumlah orang</span></div>
+            <div class="info-box"><span class="v" id="box-active">1</span><span class="l">Anggota aktif</span></div>
+            <div class="info-box"><span class="v" id="box-recharge">Rp 100.000</span><span class="l">Total isi ulang</span></div>
+            <div class="info-box"><span class="v" id="box-comm" style="color:var(--accent-color)">Rp 5.000</span><span class="l">Komisi didapat</span></div>
+        </div>
+
+        <button class="btn-view-team" id="viewBtn" onclick="toggleTeam()">Lihat tim <i class="ri-arrow-down-s-line" id="arrowIcon" style="transition: 0.4s;"></i></button>
+
+        <div class="expand-container" id="expandArea">
+            <div class="expand-content">
+                <div class="list-inner">
+                    <div class="search-box"><i class="ri-search-line"></i><input type="text" id="searchInput" placeholder="Cari nama atau nomor..." onkeyup="filterList()"></div>
+                    <div id="memberList"></div> <div id="noData" style="display:none; text-align:center; padding: 20px; font-size: 11px; color:#444;">Tidak ditemukan hasil.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DATABASE DATA TIM (Ndan bisa edit di sini)
+    const teamData = {
+        1: {
+            stats: { count: "1", active: "1", recharge: "Rp 100.000", comm: "Rp 5.000" },
+            members: [
+                { name: "Budi Santoso", phone: "0812****5543", dep: "Rp 100.000", wit: "Rp 50.000" }
+            ]
+        },
+        2: {
+            stats: { count: "1", active: "1", recharge: "Rp 250.000", comm: "Rp 12.500" },
+            members: [
+                { name: "Siti Aminah", phone: "0857****9910", dep: "Rp 250.000", wit: "Rp 20.000" }
+            ]
+        },
+        3: {
+            stats: { count: "1", active: "0", recharge: "Rp 0", comm: "Rp 0" },
+            members: [
+                { name: "Andi Wijaya", phone: "0899****1122", dep: "Rp 0", wit: "Rp 0" }
+            ]
+        }
+    };
+
+    let currentLvl = 1;
+
+    function renderMembers(lvl) {
+        const container = document.getElementById('memberList');
+        container.innerHTML = "";
+        const data = teamData[lvl].members;
+
+        data.forEach(m => {
+            container.innerHTML += `
+                <div class="member-card">
+                    <div class="member-info-top">
+                        <span class="member-name">${m.name}</span>
+                        <span class="member-phone">${m.phone}</span>
+                    </div>
+                    <div class="member-detail-row">
+                        <span class="detail-label">Total Deposit</span>
+                        <span class="detail-value" style="color:#4cd964;">${m.dep}</span>
+                    </div>
+                    <div class="member-detail-row">
+                        <span class="detail-label">Total Penarikan</span>
+                        <span class="detail-value" style="color:var(--accent-color);">${m.wit}</span>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function switchLevel(lvl, el) {
+        currentLvl = lvl;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+
+        // Update Stats & Header
+        document.getElementById('levelTitle').innerText = "Detail tim Level " + lvl;
+        document.getElementById('box-count').innerText = teamData[lvl].stats.count;
+        document.getElementById('box-active').innerText = teamData[lvl].stats.active;
+        document.getElementById('box-recharge').innerText = teamData[lvl].stats.recharge;
+        document.getElementById('box-comm').innerText = teamData[lvl].stats.comm;
+
+        renderMembers(lvl);
+    }
+
+    function toggleTeam() {
+        const area = document.getElementById('expandArea');
+        const icon = document.getElementById('arrowIcon');
+        const btn = document.getElementById('viewBtn');
+        area.classList.toggle('open');
+        btn.classList.toggle('active');
+        icon.style.transform = area.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    function filterList() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const cards = document.getElementsByClassName('member-card');
+        let match = false;
+        for (let card of cards) {
+            const name = card.querySelector('.member-name').innerText.toLowerCase();
+            const phone = card.querySelector('.member-phone').innerText.toLowerCase();
+            if(name.includes(input) || phone.includes(input)) {
+                card.style.display = "block"; match = true;
+            } else { card.style.display = "none"; }
+        }
+        document.getElementById('noData').style.display = match ? "none" : "block";
+    }
+
+    // Jalankan Level 1 saat pertama buka
+    window.onload = () => renderMembers(1);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VisionPay - Riwayat Transaksi Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --accent-color: #ff3b30;
+            --secondary-bg: #0a0a0a;
+            --border-color: #1a1a1a;
+            --text-muted: #888;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --side-margin: 22px; 
+            --success-color: #34c759;
+            --process-color: #ffcc00;
+            --blue-soft: #007aff;
+            --purple-soft: #af52de;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: #ececec; font-family: var(--font-sans);  }
+
+        /* HEADER */
+       /* Update Header & Tombol Back Bundar */
+/* Header Container */
+header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 10px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        .container { padding: 85px var(--side-margin) 0 var(--side-margin); }
+
+        /* FILTER TABS */
+        .filter-tabs { display: flex; gap: 8px; margin-bottom: 22px; }
+        .tab {
+            flex: 1; text-align: center; padding: 11px 0; border-radius: 10px;
+            background: #0a0a0a; border: 1px solid var(--border-color);
+            color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer;
+            transition: 0.3s;
+        }
+        .tab.active { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+
+        /* TRANSACTION ITEM */
+        .history-item {
+            background: var(--secondary-bg); border: 1px solid var(--border-color);
+            border-radius: 18px; margin-bottom: 15px; padding: 16px;
+            animation: fadeInUp 0.4s ease-out;
+        }
+        .hidden { display: none; }
+
+        .item-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .title-box { display: flex; align-items: center; gap: 10px; }
+        .icon-circle { 
+            width: 34px; height: 34px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-size: 16px; 
+        }
+        
+        /* ICONS COLORING */
+        .icon-depo { background: rgba(52, 199, 89, 0.08); color: var(--success-color); }
+        .icon-wd { background: rgba(255, 59, 48, 0.08); color: var(--accent-color); }
+        .icon-task { background: rgba(0, 122, 255, 0.08); color: var(--blue-soft); }
+        .icon-gift { background: rgba(255, 204, 0, 0.08); color: var(--process-color); }
+        .icon-pkg { background: rgba(175, 82, 222, 0.08); color: var(--purple-soft); }
+
+        .title-box h3 { font-size: 13px; font-weight: 600; color: #fff; }
+        
+        .status-badge { font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+        .bg-success { background: rgba(52, 199, 89, 0.1); color: var(--success-color); }
+        .bg-process { background: rgba(255, 204, 0, 0.1); color: var(--process-color); }
+        .bg-failed { background: rgba(255, 59, 48, 0.1); color: var(--accent-color); }
+
+        /* DETAIL AREA - COMPACT STYLE */
+        .detail-area { background: #050505; border-radius: 12px; padding: 12px; border: 1px solid #111; }
+        .d-row { display: flex; justify-content: space-between; margin-bottom: 7px; font-size: 11px; }
+        .d-row:last-child { margin-bottom: 0; }
+        .d-row span:first-child { color: var(--text-muted); }
+        .d-row span:last-child { color: #ccc; }
+        
+        .divider { height: 1px; background: #181818; margin: 10px 0; }
+        
+        .item-footer { display: flex; justify-content: space-between; align-items: center; }
+        .total-label { font-size: 11px; font-weight: 500; color: #fff; }
+        .total-value { font-size: 14px; font-weight: 700; }
+        
+        .val-plus { color: var(--success-color); }
+        .val-minus { color: var(--accent-color); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+
+    <div class="container">
+        <div class="filter-tabs">
+            <div class="tab active" onclick="filterData('deposit', this)">Deposit</div>
+            <div class="tab" onclick="filterData('penarikan', this)">Penarikan</div>
+            <div class="tab" onclick="filterData('lainnya', this)">Lainnya</div>
+        </div>
+
+        <div id="historyList">
+            
+            <div class="history-item" data-type="deposit">
+                <div class="item-top">
+                    <div class="title-box">
+                        <div class="icon-circle icon-depo"><i class="ri-wallet-3-line"></i></div>
+                        <h3>Isi ulang saldo</h3>
+                    </div>
+                    <div class="status-badge bg-success">Berhasil</div>
+                </div>
+                <div class="detail-area">
+                    <div class="d-row"><span>Jumlah deposit</span><span>Rp 500.000</span></div>
+                    <div class="d-row"><span>Bonus (10%)</span><span class="val-plus">+ Rp 50.000</span></div>
+                    <div class="d-row"><span>Waktu</span><span>Senin, 29 Des 2025 - 14:20</span></div>
+                    <div class="divider"></div>
+                    <div class="item-footer">
+                        <span class="total-label">Total saldo masuk</span>
+                        <span class="total-value val-plus">Rp 550.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-item hidden" data-type="penarikan">
+                <div class="item-top">
+                    <div class="title-box">
+                        <div class="icon-circle icon-wd"><i class="ri-bank-card-line"></i></div>
+                        <h3>Tarik saldo</h3>
+                    </div>
+                    <div class="status-badge bg-success">Berhasil</div>
+                </div>
+                <div class="detail-area">
+                    <div class="d-row"><span>Metode penarikan</span><span>BCA </span></div>
+                    <div class="d-row"><span>Jumlah penarikan</span><span>Rp 200.000</span></div>
+                    <div class="d-row"><span>Potongan admin (10%)</span><span class="val-minus">- Rp 20.000</span></div>
+                    <div class="d-row"><span>Waktu</span><span>Senin, 29 Des 2025 - 23:10</span></div>
+                    <div class="divider"></div>
+                    <div class="item-footer">
+                        <span class="total-label">Total diterima</span>
+                        <span class="total-value val-minus">Rp 180.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-item hidden" data-type="lainnya">
+                <div class="item-top">
+                    <div class="title-box">
+                        <div class="icon-circle icon-task"><i class="ri-movie-line"></i></div>
+                        <h3>Hadiah tugas</h3>
+                    </div>
+                    <div class="status-badge bg-success">Berhasil</div>
+                </div>
+                <div class="detail-area">
+                    <div class="d-row"><span>Nama film</span><span>Avatar: The Way of Water</span></div>
+                    <div class="d-row"><span>Hadiah</span><span>Rp 5.000</span></div>
+                    <div class="d-row"><span>Waktu</span><span>Senin, 29 Des 2025 - 22:45</span></div>
+                    <div class="divider"></div>
+                    <div class="item-footer">
+                        <span class="total-label">Total diterima</span>
+                        <span class="total-value val-plus">Rp 5.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-item hidden" data-type="lainnya">
+                <div class="item-top">
+                    <div class="title-box">
+                        <div class="icon-circle icon-gift"><i class="ri-ticket-2-line"></i></div>
+                        <h3>Bonus kode promo</h3>
+                    </div>
+                    <div class="status-badge bg-success">Berhasil</div>
+                </div>
+                <div class="detail-area">
+                    <div class="d-row"><span>Kode promo</span><span style="color:var(--process-color)">VISION2025</span></div>
+                    <div class="d-row"><span>Waktu</span><span>Senin, 29 Des 2025 - 19:15</span></div>
+                    <div class="divider"></div>
+                    <div class="item-footer">
+                        <span class="total-label">Nominal bonus</span>
+                        <span class="total-value val-plus">Rp 50.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-item hidden" data-type="lainnya">
+                <div class="item-top">
+                    <div class="title-box">
+                        <div class="icon-circle icon-pkg"><i class="ri-box-3-line"></i></div>
+                        <h3>Pembelian paket</h3>
+                    </div>
+                    <div class="status-badge bg-success">Berhasil</div>
+                </div>
+                <div class="detail-area">
+                    <div class="d-row"><span>Nama paket</span><span>Vision Platinum V1</span></div>
+                    <div class="d-row"><span>Masa aktif</span><span>30 Hari</span></div>
+                    <div class="d-row"><span>Waktu</span><span>Senin, 29 Des 2025 - 10:00</span></div>
+                    <div class="divider"></div>
+                    <div class="item-footer">
+                        <span class="total-label">Harga paket</span>
+                        <span class="total-value val-minus">Rp 1.000.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-item hidden" data-type="lainnya">
+                <div class="item-top">
+                    <div class="title-box">
+                        <div class="icon-circle icon-task"><i class="ri-user-follow-line"></i></div>
+                        <h3>Bonus pendaftaran</h3>
+                    </div>
+                    <div class="status-badge bg-success">Berhasil</div>
+                </div>
+                <div class="detail-area">
+                    <div class="d-row"><span>Keterangan</span><span>Bonus pengguna baru</span></div>
+                    <div class="d-row"><span>Waktu</span><span>Senin, 29 Des 2025 - 08:00</span></div>
+                    <div class="divider"></div>
+                    <div class="item-footer">
+                        <span class="total-label">Saldo awal</span>
+                        <span class="total-value val-plus">Rp 10.000</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+/* ===========================================================
+   1. UTILITY & DATA ACCESS
+=========================================================== */
+function getUsers() {
+    return JSON.parse(localStorage.getItem("users")) || [];
+}
+
+function getCurrentUser() {
+    const id = localStorage.getItem("currentUser");
+    if (!id) return null;
+    return getUsers().find(u => u.id === id);
+}
+
+// Fungsi format angka ke Rupiah standar (Rp 10.000)
+function formatIDR(num) {
+    return Math.abs(Number(num)).toLocaleString("id-ID");
+}
+
+/* ===========================================================
+   2. RENDER ENGINE (RIWAYAT TRANSAKSI)
+=========================================================== */
+function renderHistory() {
+    const user = getCurrentUser();
+    const historyList = document.getElementById("historyList");
+    
+    if (!user) {
+        window.location.href = "daftar.html?action=login";
+        return;
+    }
+
+    historyList.innerHTML = ""; 
+
+    // Urutkan catatan dari yang terbaru (paling atas)
+    const catatan = (user.catatan || []).slice().reverse();
+
+    if (catatan.length === 0) {
+        historyList.innerHTML = `<div style="text-align:center; padding:50px 20px; color:#555; font-size:12px;">Belum ada riwayat transaksi.</div>`;
+        return;
+    }
+
+    catatan.forEach(item => {
+        let htmlContent = "";
+
+        // --- A. LOGIKA TAMPILAN DEPOSIT (DETAIL SESUAI PERMINTAAN) ---
+        if (item.tipe === "deposit") {
+            htmlContent = `
+            <div class="history-item" data-type="deposit">
+                <div class="item-top">
+                    <div class="title-box">
+                        <div class="icon-circle icon-depo"><i class="ri-wallet-3-line"></i></div>
+                        <h3>${item.judul || "Deposit Saldo"}</h3>
+                    </div>
+                    <div class="status-badge ${item.status === 'Berhasil' ? 'bg-success' : 'bg-process'}">
+                        ${item.status || "Menunggu"}
+                    </div>
+                </div>
+                <div class="detail-area">
+                    <div class="d-row">
+                        <span>Jumlah Deposit</span>
+                        <span style="color:#fff; font-weight:600;">Rp ${formatIDR(item.jumlahDeposit || item.jumlah)}</span>
+                    </div>
+                    <div class="d-row">
+                        <span>${item.namaBonus || "Bonus"}</span>
+                        <span class="val-plus">+ Rp ${formatIDR(item.nominalBonus || item.bonus || 0)}</span>
+                    </div>
+                    <div class="d-row">
+                        <span>Waktu</span>
+                        <span>${item.waktu || item.tanggal}</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="item-footer">
+                        <span class="total-label">Total Saldo Masuk</span>
+                        <span class="total-value val-plus" style="font-size:15px;">Rp ${formatIDR(item.totalMasuk || item.total)}</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+        
+        // --- B. LOGIKA TAMPILAN PENARIKAN ---
+        else if (item.tipe === "penarikan") {
+            const nominalAsli = Math.abs(item.jumlah || item.total);
+            const potongan = nominalAsli * 0.1;
+            const bersih = nominalAsli - potongan;
+
+            htmlContent = `
+            <div class="history-item" data-type="penarikan">
+                <div class="item-top">
+                    <div class="title-box">
+                        <div class="icon-circle icon-wd"><i class="ri-bank-card-line"></i></div>
+                        <h3>Penarikan Saldo</h3>
+                    </div>
+                    <div class="status-badge ${item.status === 'Berhasil' ? 'bg-success' : 'bg-process'}">
+                        ${item.status || "Diproses"}
+                    </div>
+                </div>
+                <div class="detail-area">
+                    <div class="d-row"><span>Metode Penarikan</span><span>${item.keterangan || "Bank Transfer"}</span></div>
+                    <div class="d-row"><span>Total Penarikan</span><span>Rp ${formatIDR(nominalAsli)}</span></div>
+                    <div class="d-row">
+                        <span>Biaya Penarikan 10%</span>
+                        <span style="color: #ff3b30;">- Rp ${formatIDR(potongan)}</span>
+                    </div>
+                    <div class="d-row"><span>Waktu</span><span>${item.tanggal || item.waktu}</span></div>
+                    <div class="divider"></div>
+                    <div class="item-footer">
+                        <span class="total-label">Total Diterima</span>
+                        <span class="total-value val-minus">Rp ${formatIDR(bersih)}</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // --- C. LOGIKA TAMPILAN LAINNYA (TUGAS, HADIAH, PAKET) ---
+        // --- C. LOGIKA TAMPILAN LAINNYA (TUGAS, HADIAH, PAKET) ---
+else {
+    let itemIcon = "ri-gift-line";
+    let colorClass = "icon-task";
+    let labelValue = "Total diterima";
+    
+    const valRaw = item.total !== undefined ? item.total : (item.jumlah || 0);
+
+    // MODIFIKASI DISINI:
+    // Kita cek apakah tipenya aktivasi_plan ATAU angkanya di bawah 0
+    const isMinus = (item.tipe === "aktivasi_plan") || (valRaw < 0);
+
+    if(item.tipe === "tugas") { 
+        itemIcon = "ri-movie-line"; 
+        colorClass = "icon-task";
+    } else if(item.tipe === "aktivasi_plan") { 
+        itemIcon = "ri-box-3-line"; 
+        colorClass = "icon-pkg";
+        labelValue = "Total bayar";
+    }
+
+    htmlContent = `
+    <div class="history-item" data-type="lainnya">
+        <div class="item-top">
+            <div class="title-box">
+                <div class="icon-circle ${colorClass}"><i class="${itemIcon}"></i></div>
+                <h3>${item.judul || "Transaksi"}</h3>
+            </div>
+            <div class="status-badge bg-success">Berhasil</div>
+        </div>
+        <div class="detail-area">
+            <div class="d-row"><span>Keterangan</span><span>${item.keterangan || "-"}</span></div>
+            <div class="d-row"><span>Waktu</span><span>${item.tanggal || item.waktu || "-"}</span></div>
+            <div class="divider"></div>
+            <div class="item-footer">
+                <span class="total-label">${labelValue}</span>
+                <span class="total-value ${isMinus ? 'val-minus' : 'val-plus'}">
+                    ${isMinus ? '-' : '+'} Rp ${formatIDR(valRaw)}
+                </span>
+            </div>
+        </div>
+    </div>`;
+}
+
+        historyList.innerHTML += htmlContent;
+    });
+
+    // Jalankan filter sesuai tab yang sedang aktif
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab) {
+        // Ambil teks atau parameter dari fungsi onclick tab
+        const currentActiveType = activeTab.innerText.toLowerCase();
+        filterData(currentActiveType, activeTab);
+    }
+}
+
+/* ===========================================================
+   3. TAB FILTER SYSTEM
+=========================================================== */
+function filterData(type, el) {
+    // 1. Update UI Tab
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+
+    // 2. Filter Elemen Berdasarkan Atribut data-type
+    const items = document.querySelectorAll('.history-item');
+    items.forEach(item => {
+        const itemType = item.getAttribute('data-type');
+        if (itemType === type) {
+            item.style.display = "block";
+        } else {
+            item.style.display = "none";
+        }
+    });
+}
+
+/* ===========================================================
+   4. STARTUP
+=========================================================== */
+document.addEventListener("DOMContentLoaded", renderHistory);
+    </script>
+</body>
+</html>

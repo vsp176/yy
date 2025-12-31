@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Layanan Pelanggan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #111111;
+            --accent-color: #ff3b30;
+            --white-shimmer: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #777777;
+            --border-color: #222222;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Montserrat', sans-serif; padding-top: 10px; padding-bottom: 30px; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up { animation: fadeInUp 0.6s ease forwards; opacity: 0; }
+
+        @keyframes whiteSweep {
+            0% { transform: translateX(-200%) skewX(-30deg); }
+            30% { transform: translateX(200%) skewX(-30deg); }
+            100% { transform: translateX(200%) skewX(-30deg); }
+        }
+
+        header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 75px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        .service-banner {
+            margin: 20px 18px;
+            padding: 35px 20px;
+            background: linear-gradient(135deg, #111 0%, #000 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 22px;
+            text-align: center;
+        }
+        .service-banner i { font-size: 45px; color: var(--accent-color); margin-bottom: 15px; display: block; }
+        .service-banner h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 8px; }
+        .service-banner p { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+        /* --- SECTION TITLE STYLE: Hubungi Kami --- */
+        .section-title-wrap { margin: 0 22px 12px; display: flex; align-items: center; gap: 10px; }
+        .section-title { 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #fff; /* Warna putih agar lebih tegas */
+            white-space: nowrap;
+        }
+        .section-line { flex: 1; height: 1px; background: linear-gradient(to right, #222, transparent); }
+
+        .contact-grid { padding: 0 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
+        .contact-card {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-card i { font-size: 28px; color: var(--accent-color); margin-bottom: 8px; display: block; }
+        .contact-card span { font-size: 12px; font-weight: 600; }
+        .contact-card p { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+        
+        .contact-card::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, var(--white-shimmer), transparent);
+            animation: whiteSweep 4s infinite linear;
+        }
+
+        .faq-container { margin: 0 18px; display: flex; flex-direction: column; gap: 10px; }
+        .faq-item {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 18px;
+        }
+        .faq-item h4 { font-size: 12px; margin-bottom: 6px; color: #fff; font-weight: 600; }
+        .faq-item p { font-size: 10px; color: var(--text-muted); line-height: 1.5; }
+
+        .footer-note { text-align: center; margin-top: 40px; padding: 20px; opacity: 0.4; }
+        .footer-note p { font-size: 9px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+
+<div class="service-banner animate-up" style="animation-delay: 0.1s;">
+    <i class="ri-customer-service-2-fill"></i>
+    <h2>Ada yang bisa kami bantu?</h2>
+    <p>Hubungi tim dukungan kami jika Anda mengalami kendala pada akun atau transaksi.</p>
+</div>
+
+<div class="section-title-wrap animate-up" style="animation-delay: 0.2s;">
+    <span class="section-title">Hubungi Kami</span>
+    <div class="section-line"></div>
+</div>
+
+<div class="contact-grid animate-up" style="animation-delay: 0.2s;">
+    <a href="#" class="contact-card">
+        <i class="ri-whatsapp-line"></i>
+        <span>WhatsApp</span>
+        <p>Respon Cepat</p>
+    </a>
+    <a href="#" class="contact-card">
+        <i class="ri-telegram-line"></i>
+        <span>Telegram</span>
+        <p>Respon Cepat</p>
+    </a>
+</div>
+
+<div class="section-title-wrap animate-up" style="animation-delay: 0.3s;">
+    <span class="section-title">Pertanyaan Populer</span>
+    <div class="section-line"></div>
+</div>
+
+<div class="faq-container animate-up" style="animation-delay: 0.3s;">
+    <div class="faq-item">
+        <h4>Bagaimana cara tarik saldo?</h4>
+        <p>Masuk ke menu profil, pilih penarikan, masukkan jumlah dan akun bank Anda. Proses 5-30 menit.</p>
+    </div>
+    <div class="faq-item">
+        <h4>Minimal isi saldo berapa?</h4>
+        <p>Minimal isi saldo adalah Rp 320.000 melalui berbagai metode pembayaran instan.</p>
+    </div>
+</div>
+
+<div class="footer-note animate-up" style="animation-delay: 0.4s;">
+    <p>VisionPay Support &copy; 2025</p>
+</div>
+
+</body>
+</html>

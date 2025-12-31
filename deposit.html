@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Deposit Promotion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --vision-red: #ff3b30; 
+            --card-bg: #111111;
+            --border-color: #222222;
+            --text-main: #ffffff;
+            --text-dim: #888888;
+        }
+
+        /* --- ANIMASI FADE IN BERURUTAN --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in { 
+            opacity: 0; 
+            animation: fadeInUp 0.5s ease-out forwards; 
+        }
+
+        /* Jeda waktu antar section */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; letter-spacing: 0 !important; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Montserrat', sans-serif; padding-top: 70px; padding-bottom: 75px; }
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+    z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-card {
+    background: #111; border: 1px solid #333; width: 100%; max-width: 320px;
+    border-radius: 24px; padding: 25px; 
+    animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.modal-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 10px; text-align: center; color: #fff; }
+.modal-card p { font-size: 12px; color: #aaa; text-align: center; margin-bottom: 20px; }
+.modal-details { background: #000; border-radius: 15px; padding: 15px; margin-bottom: 25px; border: 1px solid #222; }
+.detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; }
+.detail-val { font-weight: 700; }
+        header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 80px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        .promo-banner {
+            margin: 15px 18px 25px; padding: 25px 20px;
+            background: linear-gradient(135deg, #ff3b30 0%, #800000 100%);
+            border-radius: 20px; position: relative; overflow: hidden;
+            display: flex; align-items: center;
+        }
+
+        .banner-content { position: relative; z-index: 2; max-width: 65%; }
+        .coin-wrapper { position: absolute; right: -15px; bottom: -15px; z-index: 1; pointer-events: none; }
+
+        .banner-icon {
+            font-size: 110px; color: rgba(255, 255, 255, 0.12); transform: rotate(-15deg);
+            display: block; position: relative;
+            -webkit-mask-image: linear-gradient(-75deg, rgba(0,0,0,0.6) 30%, #000 50%, rgba(0,0,0,0.6) 70%);
+            -webkit-mask-size: 200%; animation: shineIcon 4s infinite;
+        }
+
+        @keyframes shineIcon {
+            0% { -webkit-mask-position: 150%; }
+            40% { -webkit-mask-position: -50%; }
+            100% { -webkit-mask-position: -50%; }
+        }
+
+        .promo-banner h1 { font-size: 20px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+        .promo-banner p { font-size: 11px; opacity: 0.9; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin: 0 18px 12px; }
+        .section-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .section-title i { color: var(--vision-red); }
+
+        .timer { display: flex; gap: 4px; align-items: center; font-size: 10px; font-weight: 700; color: #aaa; }
+        .timer span { background: #222; color: #fff; padding: 2px 5px; border-radius: 4px; }
+
+        .flash-scroll {
+            display: flex; overflow-x: auto; gap: 12px;
+            padding: 0 18px 25px; scrollbar-width: none;
+            scroll-behavior: smooth; scroll-snap-type: x mandatory;
+            scroll-padding-left: 18px; 
+        }
+
+        .flash-card {
+            flex: 0 0 calc((100% - 36px - 12px) / 2); background: #111;
+            border: 1.5px solid #ff3b30; border-radius: 18px;
+            padding: 20px 10px; text-align: center;
+            position: relative; overflow: hidden; scroll-snap-align: start;
+        }
+
+        .flash-card::after {
+            content: ''; position: absolute; top: 0; left: -150%;
+            width: 65%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: skewX(-25deg); animation: kilauFlash 3s infinite;
+        }
+
+        @keyframes kilauFlash {
+            0% { left: -150%; }
+            30% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        .flash-card .amt { font-size: 15px; font-weight: 800; color: #fff; display: block; margin-bottom: 4px; }
+        .flash-card .bonus-text { font-size: 8.5px; font-weight: 700; color: #22c55e; background: rgba(34, 197, 94, 0.1); padding: 3px 8px; border-radius: 6px; }
+        .flash-card .quota-info { font-size: 9px; color: #777; margin: 12px 0 4px; display: block; text-align: left; }
+        .flash-card .bar { height: 4px; background: #222; border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
+        .flash-card .fill { height: 100%; background: var(--vision-red); }
+        .flash-card .btn-flash { 
+            width: 100%; padding: 10px; border-radius: 12px; border: none; 
+            background: var(--vision-red); color: #fff; 
+            font-family: 'Playfair Display', serif; font-size: 12px; font-weight: 700; 
+            cursor: pointer; transition: transform 0.2s ease;
+        }
+
+        .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 18px; }
+
+        .reg-card {
+            background: #111; border: 1px solid #222; border-radius: 14px;
+            padding: 15px; display: flex; flex-direction: column; gap: 4px;
+            cursor: pointer; transition: transform 0.2s ease;
+        }
+
+        .reg-card:active {
+            transform: scale(0.96); background: var(--vision-red); border-color: #ff6b6b;
+        }
+
+        .reg-card:active .reg-amt, .reg-card:active .reg-bonus, .reg-card:active .reg-total { color: #ffffff !important; }
+        .reg-card .reg-amt { font-size: 14px; font-weight: 700; color: #fff; }
+        .reg-card .reg-bonus { font-size: 10px; font-weight: 600; color: var(--vision-red); }
+        .reg-card .reg-total { font-size: 9px; color: #666; margin-top: 5px; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.97); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(10px);
+        }
+        .popup-card {
+            background: #000; border: 1px solid #222; width: 230px; padding: 35px 20px; border-radius: 30px; text-align: center;
+            transform: scale(0.9); opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .popup-card.show { transform: scale(1); opacity: 1; }
+
+        .spin-container { position: relative; width: 45px; height: 45px; margin: 0 auto 18px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .spinning-red { 
+    animation: spin 0.8s linear infinite; 
+    width: 45px; 
+    height: 45px;
+    display: block; /* Memastikan svg mengambil ruang */
+    margin: 0 auto;
+}
+
+.circle-bg { 
+    fill: none; 
+    stroke: #1a1a1a; /* Gunakan warna yang sedikit terang agar terlihat di bg hitam */
+    stroke-width: 4; 
+}
+
+.circle-bar { 
+    fill: none; 
+    stroke: var(--vision-red); 
+    stroke-width: 4; 
+    stroke-dasharray: 126; /* Keliling lingkaran (2 * PI * r) */
+    stroke-dashoffset: 60; 
+    stroke-linecap: round; 
+}
+        
+        .check-icon { font-size: 30px; color: var(--accent-color); display: none; margin-bottom: 15px; }
+        .popup-card h3 { font-size: 14px; font-weight: 600; color: #fff; font-family: 'Playfair Display', serif; }
+        .popup-card p { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+        <h3>Konfirmasi Deposit</h3>
+        <p>Silakan periksa kembali detail deposit Anda sebelum melanjutkan.</p>
+        
+        <div class="modal-details">
+            <div class="detail-row">
+                <span class="detail-label">Nominal</span>
+                <span class="detail-val" id="mdlAmt">Rp 0</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Bonus Saldo</span>
+                <span class="detail-val" id="mdlBonus" style="color: #22c55e;">+Rp 0</span>
+            </div>
+            <div class="detail-row" style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #333;">
+                <span class="detail-label">Total Terima</span>
+                <span class="detail-val" id="mdlTotal" style="color: #ff3b30; font-size: 14px;">Rp 0</span>
+            </div>
+        </div>
+<div class="modal-actions" style="display: flex; flex-direction: column; gap: 10px;">
+    <button class="btn-confirm" id="btnFinalConfirm" style="
+        background: #ff3b30; 
+        color: #fff; 
+        border: none; 
+        padding: 13px; 
+        border-radius: 14px; 
+        font-family: 'Playfair Display', serif; 
+        font-weight: 800; 
+        font-size: 14px; 
+        letter-spacing: 0.3px; 
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(255, 59, 48, 0.2);
+    ">Lanjutkan Pembayaran</button>
+    
+    <button class="btn-cancel" onclick="closeModal()" style="
+        background: transparent; 
+        color: #777; 
+        border: none; 
+        padding: 5px; 
+        font-family: 'Montserrat', sans-serif; 
+        font-weight: 600; 
+        font-size: 11px; 
+        cursor: pointer;
+    ">Batalkan</button>
+</div>
+        
+    </div>
+</div>
+<header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+
+<div class="main-content">
+    <div class="promo-banner fade-in delay-1">
+        <div class="banner-content">
+            <h1>Special Promo<br>Bonus Saldo 10%</h1>
+            <p>Hanya berlaku untuk nominal Flash Deposit di bawah ini!</p>
+        </div>
+        <div class="coin-wrapper">
+            <i class="ri-coins-line banner-icon"></i>
+        </div>
+    </div>
+
+    <div class="fade-in delay-2">
+        <div class="section-header">
+            <h3 class="section-title"><i class="ri-flashlight-fill"></i> Flash Deposit 10%</h3>
+            <div class="timer">Berakhir dalam <span>24</span>:<span>00</span>:<span>00</span></div>
+        </div>
+
+        <div class="flash-scroll">
+    <div class="flash-card">
+        <span class="amt">Rp 320.000</span>
+        <span class="bonus-text">Bonus +Rp 32.000</span>
+        <span class="quota-info">Sisa 3 Kuota</span>
+        <div class="bar"><div class="fill" style="width: 80%;"></div></div>
+        <button class="btn-flash" onclick="openModal('320.000', '32.000', '352.000', '320000')">Deposit</button>
+    </div>
+    <div class="flash-card">
+        <span class="amt">Rp 1.820.000</span>
+        <span class="bonus-text">Bonus +Rp 182.000</span>
+        <span class="quota-info">Sisa 2 Kuota</span>
+        <div class="bar"><div class="fill" style="width: 90%;"></div></div>
+        <button class="btn-flash" onclick="openModal('1.820.000', '182.000', '2.002.000', '1820000')">Deposit</button>
+    </div>
+    <div class="flash-card">
+        <span class="amt">Rp 8.250.000</span>
+        <span class="bonus-text">Bonus +Rp 825.000</span>
+        <span class="quota-info">Sisa 7 Kuota</span>
+        <div class="bar"><div class="fill" style="width: 40%;"></div></div>
+        <button class="btn-flash" onclick="openModal('8.250.000', '825.000', '9.075.000', '8250000')">Deposit</button>
+    </div>
+</div>
+
+
+    <div class="section-header fade-in delay-3">
+        <h3 class="section-title"><i class="ri-wallet-3-fill"></i> Deposit Reguler 8%</h3>
+    </div>
+
+<div class="reg-grid fade-in delay-4">
+    <div class="reg-card" onclick="openModal('320.000', '25.600', '345.600', '320000')">
+        <span class="reg-amt">Rp 320.000</span>
+        <span class="reg-bonus">Bonus +Rp 25.600</span>
+        <span class="reg-total">Terima Rp 345.600</span>
+    </div>
+    <div class="reg-card" onclick="openModal('780.000', '62.400', '842.400', '780000')">
+        <span class="reg-amt">Rp 780.000</span>
+        <span class="reg-bonus">Bonus +Rp 62.400</span>
+        <span class="reg-total">Terima Rp 842.400</span>
+    </div>
+    <div class="reg-card" onclick="openModal('1.820.000', '145.600', '1.965.600', '1820000')">
+        <span class="reg-amt">Rp 1.820.000</span>
+        <span class="reg-bonus">Bonus +Rp 145.600</span>
+        <span class="reg-total">Terima Rp 1.965.600</span>
+    </div>
+    <div class="reg-card" onclick="openModal('3.290.000', '263.200', '3.553.200', '3290000')">
+        <span class="reg-amt">Rp 3.290.000</span>
+        <span class="reg-bonus">Bonus +Rp 263.200</span>
+        <span class="reg-total">Terima Rp 3.553.200</span>
+    </div>
+    <div class="reg-card" onclick="openModal('8.250.000', '660.000', '8.910.000', '8250000')">
+        <span class="reg-amt">Rp 8.250.000</span>
+        <span class="reg-bonus">Bonus +Rp 660.000</span>
+        <span class="reg-total">Terima Rp 8.910.000</span>
+    </div>
+    <div class="reg-card" onclick="openModal('20.150.000', '1.612.000', '21.762.000', '20150000')">
+        <span class="reg-amt">Rp 20.150.000</span>
+        <span class="reg-bonus">Bonus +Rp 1.612.000</span>
+        <span class="reg-total">Terima Rp 21.762.000</span>
+    </div>
+    <div class="reg-card" onclick="openModal('50.450.000', '4.036.000', '54.486.000', '50450000')">
+        <span class="reg-amt">Rp 50.450.000</span>
+        <span class="reg-bonus">Bonus +Rp 4.036.000</span>
+        <span class="reg-total">Terima Rp 54.486.000</span>
+    </div>
+</div>
+</div>
+<div class="overlay" id="overlay" style="display:none">
+    <div class="popup-card" id="popup">
+        <div id="loader">
+            <div class="spin-container">
+                <svg class="spinning-red" width="45" height="45" viewBox="0 0 45 45">
+                    <circle class="circle-bg" cx="22.5" cy="22.5" r="20"></circle>
+                    <circle class="circle-bar" cx="22.5" cy="22.5" r="20"></circle>
+                </svg>
+            </div>
+        </div>
+
+        <i class="ri-checkbox-circle-fill" id="checkIcon" style="font-size: 30px; color: #ff3b30; display: none; margin-bottom: 15px;"></i>
+
+        <h3 id="popTitle" style="font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; color: #fff;">Memproses...</h3>
+        <p id="popSub" style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: #777; margin-top: 6px;">Menyiapkan pembayaran aman</p>
+    </div>
+</div>
+<script>/* ===========================================================
+   DATABASE & AUTHENTICATION
+=========================================================== */
+function getUsers() { return JSON.parse(localStorage.getItem("users")) || []; }
+function saveUsers(users) { localStorage.setItem("users", JSON.stringify(users)); }
+function getCurrentUser() {
+    const id = localStorage.getItem("currentUser");
+    return getUsers().find(u => u.id === id);
+}
+
+let user = getCurrentUser();
+let targetNominal = 0;
+let targetBonus = 0;
+
+/* ===========================================================
+   LOGIKA MODAL KONFIRMASI (MODAL PUTIH)
+=========================================================== */
+function openModal(amt, bonus, total, raw) {
+    targetNominal = parseInt(raw);
+    targetBonus = parseInt(bonus.replace(/\./g, '')); 
+    
+    document.getElementById('mdlAmt').innerText = "Rp " + amt;
+    document.getElementById('mdlBonus').innerText = "+Rp " + bonus;
+    document.getElementById('mdlTotal').innerText = "Rp " + total;
+    document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+}
+
+/* ===========================================================
+   PROSES DEPOSIT & OVERLAY (SINKRON DENGAN PENARIKAN)
+=========================================================== */
+document.getElementById('btnFinalConfirm').onclick = function() {
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const loader = document.getElementById('loader');
+    const checkIcon = document.getElementById('checkIcon');
+    const popTitle = document.getElementById('popTitle');
+    const popSub = document.getElementById('popSub');
+
+    closeModal(); 
+    overlay.style.display = "flex";
+    setTimeout(() => popup.classList.add('show'), 10);
+
+    setTimeout(() => {
+        if (user) {
+            const isFlash = (targetBonus / targetNominal) >= 0.09; 
+            const labelBonus = isFlash ? "Bonus Promo 10%" : "Bonus Reguler 8%";
+
+            user.catatan.push({
+                id: "DEP-" + Date.now(),
+                tipe: "deposit",
+                judul: "Deposit Saldo",
+                metode: "QRIS / Bank Transfer",
+                jumlahDeposit: targetNominal,
+                namaBonus: labelBonus,
+                nominalBonus: targetBonus,
+                waktu: new Date().toLocaleString("id-ID", { 
+                    day: '2-digit', month: 'short', year: 'numeric', 
+                    hour: '2-digit', minute: '2-digit', second: '2-digit' 
+                }).replace(/\./g, ':'),
+                totalMasuk: targetNominal + targetBonus,
+                status: "Diproses" // Status default untuk deposit baru
+            });
+
+            const allUsers = getUsers().map(u => u.id === user.id ? user : u);
+            saveUsers(allUsers);
+        }
+
+        loader.style.display = "none";
+        checkIcon.style.display = "inline-block";
+        popTitle.innerText = "Berhasil!";
+        popSub.innerText = "Menuju halaman pembayaran...";
+
+        setTimeout(() => {
+            // INI ADALAH PERBAIKANNYA:
+            window.location.href = "payment.html"; 
+        }, 1500);
+
+    }, 2000); 
+};
+
+/* ===========================================================
+   AUTO SLIDER FLASH DEPOSIT
+=========================================================== */
+const flashSlider = document.querySelector('.flash-scroll');
+let currentIndex = 0;
+
+function startAutoSlider() {
+    setInterval(() => {
+        const cards = document.querySelectorAll('.flash-card');
+        if (cards.length === 0) return;
+        currentIndex++;
+        if (currentIndex > cards.length - 2) currentIndex = 0;
+        const cardWidth = cards[0].offsetWidth + 12; 
+        flashSlider.scrollTo({ left: currentIndex * cardWidth, behavior: 'smooth' });
+    }, 3500); 
+}
+
+/* ===========================================================
+   INITIALIZE
+=========================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    startAutoSlider();
+    if (!user) window.location.href = "daftar.html?action=login";
+});</script>
+</body>
+</html>

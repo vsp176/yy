@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Penarikan Premium Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --vision-red: #ff3b30; 
+            --text-main: #ffffff;
+            --card-bg: #111111;
+            --border-color: #222222;
+            --font-main: 'Montserrat', sans-serif;
+            --font-classic: 'Playfair Display', serif;
+        }
+
+        /* --- ANIMASI FADE IN BERURUTAN --- */
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(15px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .fade-in { 
+            opacity: 0; /* Awalnya sembunyi */
+            animation: fadeInUp 0.5s ease-out forwards; 
+        }
+
+        /* Jeda waktu antar elemen (0.1 detik per elemen) */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: var(--font-main); padding-top: 70px; padding-bottom: 75px; overflow-x: hidden; }
+
+        /* HEADER */
+        header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 80px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        /* BANNER SALDO */
+        .balance-banner { 
+            margin: 10px 20px 25px; padding: 25px 22px; 
+            background: linear-gradient(145deg, #111 0%, #050505 100%); 
+            border: 1px solid var(--border-color); border-radius: 24px; 
+        }
+        .balance-label { font-size: 11px; color: #888; font-weight: 600; text-transform: capitalize; }
+        .balance-amount { font-size: 22px; font-weight: 800; margin: 6px 0; display: block; }
+        .min-wd-info { 
+            font-size: 10px; color: #444; font-weight: 600; display: block; 
+            padding-top: 10px; margin-top: 10px; border-top: 1px dashed var(--border-color); 
+        }
+
+        /* SECTION HEADER */
+        .section-header { margin: 0 20px 12px; }
+        .section-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #fff; }
+        
+        /* ACCOUNT CARD */
+        .account-card { 
+            margin: 0 20px 25px; padding: 18px; background: var(--card-bg); 
+            border: 1px solid var(--border-color); border-radius: 20px; 
+            display: flex; align-items: center; gap: 15px; 
+        }
+        .bank-badge { 
+            width: 40px; height: 40px; background: #fff; border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: 800; color: #003d79; font-size: 10px; 
+        }
+        .account-info h4 { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+        .account-info p { font-size: 11px; color: #666; font-weight: 500; }
+
+        /* SLIDER NOMINAL */
+        .slider-wrapper {
+            width: 100%; overflow-x: auto; display: flex; gap: 12px; 
+            padding: 5px 20px 20px; scroll-snap-type: x mandatory; 
+            scroll-behavior: smooth; scrollbar-width: none;
+        }
+        .slider-wrapper::-webkit-scrollbar { display: none; }
+
+        .wd-card {
+            min-width: 175px; background: var(--card-bg); border: 1px solid var(--border-color); 
+            border-radius: 20px; padding: 20px 15px; display: flex; flex-direction: column; gap: 4px;
+            scroll-snap-align: center; position: relative; overflow: hidden;
+            border: 1px solid #ff3b30;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
+        }
+
+        .wd-card.selected { background: var(--vision-red); border-color: #ff6b6b; transform: translateY(-5px); z-index: 5; }
+        .wd-card .amt { font-size: 16px; font-weight: 800; color: #fff; }
+        .wd-card .fee { font-size: 9px; color: var(--vision-red); font-weight: 700; }
+        .wd-card .total-receive { font-size: 10px; color: #888; font-weight: 700; }
+
+        /* Font Putih Saat Aktif */
+        .wd-card.selected .fee, 
+        .wd-card.selected .total-receive { color: #ffffff !important; opacity: 0.9; }
+
+        /* INPUT MANUAL */
+        .manual-input-container { margin: 10px 20px 30px; }
+        .input-group { 
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 18px; 
+            padding: 18px 15px; display: flex; align-items: center; 
+        }
+        .input-group input { background: transparent; border: none; outline: none; color: #fff; font-size: 16px; font-weight: 800; width: 100%; }
+        
+        .calc-detail { margin-top: 12px; padding: 0 5px; display: none; }
+        .calc-line { font-size: 10px; font-weight: 700; margin-bottom: 5px; display: block; }
+
+        /* BUTTON */
+        .btn-submit { 
+            margin: 0 20px 25px; width: calc(100% - 40px); padding: 18px; 
+            border-radius: 20px; border: none; background: var(--vision-red); 
+            color: #fff; font-family: 'Playfair Display'; font-size: 17px; 
+            font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-submit:disabled { opacity: 0.2; transform: scale(0.98); }
+        .btn-sub-text { font-family: var(--font-main); font-size: 10px; font-weight: 400; display: block; margin-top: 2px; }
+
+        .wd-card::before {
+            content: ""; position: absolute; top: 0; left: -150%; width: 100%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shine 4s infinite;
+        }
+        @keyframes shine { 0% { left: -150%; } 30% { left: 150%; } 100% { left: 150%; } }
+        
+.overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.97); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(10px);
+        }
+        .popup-card {
+            background: #000; border: 1px solid #222; width: 230px; padding: 35px 20px; border-radius: 30px; text-align: center;
+            transform: scale(0.9); opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .popup-card.show { transform: scale(1); opacity: 1; }
+
+        .spin-container { position: relative; width: 45px; height: 45px; margin: 0 auto 18px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .spinning-red { 
+    animation: spin 0.8s linear infinite; 
+    width: 45px; 
+    height: 45px;
+    display: block; /* Memastikan svg mengambil ruang */
+    margin: 0 auto;
+}
+
+.circle-bg { 
+    fill: none; 
+    stroke: #1a1a1a; /* Gunakan warna yang sedikit terang agar terlihat di bg hitam */
+    stroke-width: 4; 
+}
+
+.circle-bar { 
+    fill: none; 
+    stroke: var(--vision-red); 
+    stroke-width: 4; 
+    stroke-dasharray: 126; /* Keliling lingkaran (2 * PI * r) */
+    stroke-dashoffset: 60; 
+    stroke-linecap: round; 
+}
+        
+        .check-icon { font-size: 30px; color: var(--accent-color); display: none; margin-bottom: 15px; }
+        .popup-card h3 { font-size: 14px; font-weight: 600; color: #fff; font-family: 'Playfair Display', serif; }
+        .popup-card p { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+
+<div class="main-content">
+<div class="balance-banner fade-in delay-1">
+    <span class="balance-label">Saldo tersedia</span>
+    <span class="balance-amount" id="saldoTersedia">Rp 0</span>
+    <span class="min-wd-info">Minimal penarikan saldo Rp 40.000</span>
+</div>
+
+<div class="fade-in delay-2">
+    <div class="section-header">
+        <h3 class="section-title"><i class="ri-bank-card-2-line" style="color:var(--vision-red)"></i> Rekening Tujuan</h3>
+    </div>
+    <a href="bank.html" style="text-decoration: none; color: inherit;">
+        <div class="account-card" id="targetAccount">
+            <div class="bank-badge" id="wdBankLogo" style="overflow: hidden; padding: 2px;">
+                <img src="" id="imgBankLogo" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <div class="account-info">
+                <h4 id="wdBankName">BELUM ADA DATA</h4>
+                <p id="wdAccountInfo">Klik untuk atur rekening</p>
+            </div>
+            <i class="ri-arrow-right-s-line" style="margin-left: auto; color: #333;"></i>
+        </div>
+    </a>
+</div>
+
+    <div class="fade-in delay-3">
+        <div class="section-header">
+            <h3 class="section-title"><i class="ri-money-dollar-circle-line" style="color:var(--vision-red)"></i> Pilih Nominal</h3>
+        </div>
+        <div class="slider-wrapper" id="wdSlider">
+            <div class="wd-card" onclick="selectWD(this, 40000, '40.000')">
+                <span class="amt">Rp 40.000</span>
+                <span class="fee">Potongan 10%: Rp 4.000</span>
+                <span class="total-receive">Total Diterima: Rp 36.000</span>
+            </div>
+            <div class="wd-card" onclick="selectWD(this, 100000, '100.000')">
+                <span class="amt">Rp 100.000</span>
+                <span class="fee">Potongan 10%: Rp 10.000</span>
+                <span class="total-receive">Total Diterima: Rp 90.000</span>
+            </div>
+            <div class="wd-card" onclick="selectWD(this, 250000, '250.000')">
+                <span class="amt">Rp 250.000</span>
+                <span class="fee">Potongan 10%: Rp 25.000</span>
+                <span class="total-receive">Total Diterima: Rp 225.000</span>
+            </div>
+            <div class="wd-card" onclick="selectWD(this, 500000, '500.000')">
+                <span class="amt">Rp 500.000</span>
+                <span class="fee">Potongan 10%: Rp 50.000</span>
+                <span class="total-receive">Total Diterima: Rp 450.000</span>
+            </div>
+            <div class="wd-card" onclick="selectWD(this, 1000000, '1.000.000')">
+                <span class="amt">Rp 1.000.000</span>
+                <span class="fee">Potongan 10%: Rp 100.000</span>
+                <span class="total-receive">Total Diterima: Rp 900.000</span>
+            </div>
+            <div style="min-width: 40vw;"></div>
+        </div>
+    </div>
+
+    <div class="manual-input-container fade-in delay-4">
+        <div class="section-header" style="margin-left:0; margin-bottom:10px;">
+            <h3 class="section-title">Atau Input Nominal</h3>
+        </div>
+        <div class="input-group">
+            <span style="font-weight: 800; margin-right: 6px;">Rp</span>
+            <input type="number" id="manualAmt" placeholder="0" oninput="handleManualInput()">
+        </div>
+        <div class="calc-detail" id="inputDetail">
+            <span class="calc-line" id="displayFee" style="color:var(--vision-red)">Potongan 10%: Rp 0</span>
+            <span class="calc-line" id="displayReceive" style="color:#666">Total Diterima: Rp 0</span>
+        </div>
+    </div>
+
+    <div class="fade-in delay-5">
+        <button class="btn-submit" id="btnWD" disabled>Konfirmasi Penarikan</button>
+    </div>
+</div>
+<div class="overlay" id="overlay" style="display:none">
+    <div class="popup-card" id="popup">
+        <div id="loader">
+            <div class="spin-container">
+                <svg class="spinning-red" width="45" height="45" viewBox="0 0 45 45">
+                    <circle class="circle-bg" cx="22.5" cy="22.5" r="20"></circle>
+                    <circle class="circle-bar" cx="22.5" cy="22.5" r="20"></circle>
+                </svg>
+            </div>
+        </div>
+
+        <i class="ri-checkbox-circle-fill" id="checkIcon" style="font-size: 30px; color: #ff3b30; display: none; margin-bottom: 15px;"></i>
+        
+        <i class="ri-close-circle-fill" id="errorIcon" style="font-size: 30px; color: #ff3b30; display: none; margin-bottom: 15px;"></i>
+
+        <h3 id="popTitle" style="font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; color: #fff;">Memverifikasi...</h3>
+        <p id="popSub" style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: #777; margin-top: 6px;">Mohon tunggu sebentar</p>
+    </div>
+</div>
+<script>
+  /* ===========================================================
+   DATABASE & AUTHENTICATION INTEGRATION
+=========================================================== */
+function getUsers() { return JSON.parse(localStorage.getItem("users")) || []; }
+function saveUsers(users) { localStorage.setItem("users", JSON.stringify(users)); }
+function getCurrentUser() {
+    const id = localStorage.getItem("currentUser");
+    return getUsers().find(u => u.id === id);
+}
+
+// Inisialisasi Data Dasar
+let user = getCurrentUser();
+const saldoDisplay = document.getElementById('saldoTersedia');
+const formatIDR = (num) => new Intl.NumberFormat('id-ID').format(num);
+
+// Validasi Login & Tampilan Saldo
+if (user) {
+    saldoDisplay.innerText = `Rp ${formatIDR(user.saldo.tersedia)}`;
+} else {
+    window.location.href = "daftar.html?action=login";
+}
+
+/* ===========================================================
+   LOGIKA INTERAKSI UI (NOMINAL & SLIDER)
+=========================================================== */
+const slider = document.getElementById('wdSlider');
+const btn = document.getElementById('btnWD');
+const manualInput = document.getElementById('manualAmt');
+const inputDetail = document.getElementById('inputDetail');
+let selectedAmount = 0;
+let isInteracting = false;
+
+// 1. Pilih Nominal dari Slider
+function selectWD(el, rawAmt, formattedAmt) {
+    isInteracting = true;
+    manualInput.value = ""; 
+    inputDetail.style.display = "none";
+    
+    document.querySelectorAll('.wd-card').forEach(c => c.classList.remove('selected'));
+    
+    el.classList.add('selected');
+    selectedAmount = rawAmt;
+    
+    updateButtonState(formattedAmt, rawAmt * 0.9);
+    el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+}
+
+// 2. Input Manual Nominal
+function handleManualInput() {
+    isInteracting = true;
+    const val = parseFloat(manualInput.value);
+    document.querySelectorAll('.wd-card').forEach(c => c.classList.remove('selected'));
+    
+    if (val >= 40000) {
+        selectedAmount = val;
+        inputDetail.style.display = "block";
+        document.getElementById('displayFee').innerText = `Potongan 10%: Rp ${formatIDR(val * 0.1)}`;
+        document.getElementById('displayReceive').innerText = `Total Diterima: Rp ${formatIDR(val * 0.9)}`;
+        updateButtonState(formatIDR(val), val * 0.9);
+    } else {
+        inputDetail.style.display = val > 0 ? "block" : "none";
+        if(val > 0) {
+            document.getElementById('displayFee').innerText = "Minimal penarikan Rp 40.000";
+            document.getElementById('displayReceive').innerText = "";
+        }
+        btn.disabled = true;
+    }
+}
+
+function updateButtonState(amtText, receiveRaw) {
+    btn.disabled = false;
+    btn.innerHTML = `Tarik Rp ${amtText} <span class="btn-sub-text">Terima Bersih: Rp ${formatIDR(receiveRaw)}</span>`;
+}
+
+/* ===========================================================
+   EKSEKUSI PENARIKAN (VERSI PERBAIKAN FINAL)
+=========================================================== */
+btn.onclick = () => {
+    // 1. Inisialisasi Elemen & Suara
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const loader = document.getElementById('loader');
+    const checkIcon = document.getElementById('checkIcon');
+    const errorIcon = document.getElementById('errorIcon');
+    const popTitle = document.getElementById('popTitle');
+    const popSub = document.getElementById('popSub');
+    const soundChing = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+    
+    // 2. Reset Status Popup
+    loader.style.display = "block";
+    checkIcon.style.display = "none";
+    errorIcon.style.display = "none";
+    popTitle.innerText = "Memproses...";
+    popSub.innerText = "Memvalidasi data & saldo";
+
+    overlay.style.display = "flex";
+    setTimeout(() => popup.classList.add('show'), 10);
+
+    // 3. Validasi & Eksekusi
+    setTimeout(() => {
+        // --- A. VALIDASI REKENING ---
+        if (!user.bankRekening || !user.bankRekening.namaBank) {
+            loader.style.display = "none";
+            errorIcon.style.display = "inline-block";
+            popTitle.innerText = "Penarikan Gagal";
+            popSub.innerText = "Data bank belum diatur!";
+            setTimeout(() => {
+                popup.classList.remove('show');
+                setTimeout(() => { overlay.style.display = "none"; }, 300);
+            }, 2000);
+            return;
+        }
+
+        // --- B. VALIDASI SALDO ---
+        if (selectedAmount > user.saldo.tersedia) {
+            loader.style.display = "none";
+            errorIcon.style.display = "inline-block";
+            popTitle.innerText = "Penarikan Gagal";
+            popSub.innerText = "Saldo tersedia tidak mencukupi!";
+            setTimeout(() => {
+                popup.classList.remove('show');
+                setTimeout(() => { overlay.style.display = "none"; }, 300);
+            }, 2000);
+            return;
+        }
+
+        // --- C. PROSES SIMPAN DATA (PERBAIKAN) ---
+        
+        // Simpan hanya nama bank untuk metode
+        const namaBankUser = user.bankRekening.namaBank;
+        
+        // Update Saldo User
+        user.saldo.tersedia -= selectedAmount;
+
+        // Simpan ke Catatan
+// Ganti bagian tanggal pada btn.onclick di halaman penarikan:
+user.catatan.push({
+    id: "WD-" + Date.now(),
+    tipe: "penarikan",
+    judul: "Penarikan Saldo",
+    keterangan: user.bankRekening.namaBank,
+    jumlah: selectedAmount,
+    total: selectedAmount,
+    tanggal: new Date().toLocaleString("id-ID", { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit' // <--- MENAMBAHKAN DETIK
+    }).replace(/\./g, ':'), // Agar format waktu pakai titik dua (14:05:01)
+    status: "Diproses"
+});
+
+        // Update Database
+        const allUsers = getUsers().map(u => u.id === user.id ? user : u);
+        saveUsers(allUsers);
+
+        // UI Berhasil
+        loader.style.display = "none";
+        checkIcon.style.display = "inline-block";
+        popTitle.innerText = "Penarikan Berhasil";
+        popSub.innerText = "Permintaan penarikan telah dikirim!";
+        
+        soundChing.play().catch(e => {});
+
+        setTimeout(() => {
+            window.location.href = "profil.html";
+        }, 1800);
+
+    }, 1500);
+};
+
+// Fungsi Helper untuk Menampilkan Hasil (Centang/Silang)
+function showResult(icon, title, sub, isSuccess) {
+    icon.style.display = "inline-block";
+    document.getElementById('popTitle').innerText = title;
+    document.getElementById('popSub').innerText = sub;
+
+    if (isSuccess) {
+        setTimeout(() => { window.location.href = "profil.html"; }, 2000);
+    } else {
+        setTimeout(() => {
+            document.getElementById('popup').classList.remove('show');
+            setTimeout(() => { document.getElementById('overlay').style.display = "none"; }, 300);
+        }, 2500);
+    }
+}
+
+// Fungsi cadangan jika errorIcon tidak ditemukan di HTML
+function createErrorIcon() {
+    const i = document.createElement('i');
+    i.id = "errorIcon";
+    i.className = "ri-close-circle-fill";
+    i.style.cssText = "font-size: 30px; color: #ff3b30; display: none; margin-bottom: 15px;";
+    document.getElementById('loader').after(i);
+    return i;
+}
+
+/* ===========================================================
+   HELPER FUNCTIONS (DATA LOADING & UI)
+=========================================================== */
+// Fungsi untuk memicu popup gagal jika bank kosong
+function checkBankRequirement() {
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const loader = document.getElementById('loader');
+    const errorIcon = document.getElementById('errorIcon');
+    const popTitle = document.getElementById('popTitle');
+    const popSub = document.getElementById('popSub');
+
+    // Jika data bank TIDAK ADA
+    if (!user.bankRekening || !user.bankRekening.namaBank) {
+        // Tampilkan Overlay Proses sebentar
+        overlay.style.display = "flex";
+        setTimeout(() => popup.classList.add('show'), 10);
+
+        // Setelah 1.5 detik, ubah jadi GAGAL
+        setTimeout(() => {
+            loader.style.display = "none";
+            errorIcon.style.display = "inline-block";
+            popTitle.innerText = "Gagal Memverifikasi";
+            popSub.innerText = "Silakan ikat akun bank terlebih dahulu!";
+
+            // Pindah ke halaman bank setelah 2 detik
+            setTimeout(() => {
+                window.location.href = "bank.html";
+            }, 2000);
+        }, 1500);
+        
+        return false; // Berhenti di sini
+    }
+    
+    // Jika data bank ADA, isi datanya seperti biasa
+    const bank = user.bankRekening;
+    document.getElementById('wdBankName').innerText = bank.namaBank;
+    const maskedNum = bank.nomorRekening.length > 8 
+        ? bank.nomorRekening.substring(0, 4) + "****" + bank.nomorRekening.slice(-4)
+        : bank.nomorRekening;
+    document.getElementById('wdAccountInfo').innerText = `${maskedNum} - AN. ${bank.namaPemilik.toUpperCase()}`;
+    document.getElementById('imgBankLogo').src = bank.logoBank;
+    document.getElementById('wdBankLogo').style.background = "#fff";
+    return true;
+}
+
+// Jalankan saat halaman siap
+document.addEventListener("DOMContentLoaded", () => {
+    const isBankReady = checkBankRequirement();
+    if(isBankReady) {
+        setTimeout(initAutoSlide, 1000);
+    }
+});
+
+async function initAutoSlide() {
+    const cards = slider.querySelectorAll('.wd-card');
+    while (true) {
+        for (let i = 0; i < cards.length; i++) {
+            if (isInteracting) return;
+            cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            await new Promise(r => setTimeout(r, 3000));
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadBankData();
+    setTimeout(initAutoSlide, 1000);
+});
+
+slider.addEventListener('touchstart', () => isInteracting = true);
+</script>
+
+</body>
+</html>

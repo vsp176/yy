@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Portal Eksklusif</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #0d0d0d;
+            --accent-color: #ff3b30;
+            --white-shimmer: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --border-color: #1a1a1a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-hero { animation: fadeInUp 0.8s ease forwards; }
+        .animate-box { animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; animation-delay: 0.3s; }
+
+        /* Hero Header */
+        .auth-hero { padding: 45px 25px 20px; text-align: center; }
+        .auth-hero h2 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 800; margin-bottom: 5px; letter-spacing: -0.5px; }
+        .auth-hero p { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+
+        /* Slidable Viewport */
+        .viewport { width: 100%; overflow: hidden; }
+        .auth-container { display: flex; width: 200%; transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1); }
+        .show-login { transform: translateX(-50%); }
+
+        .form-section { width: 50%; padding: 0 20px; }
+        .main-box {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 32px;
+            padding: 28px 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            position: relative;
+        }
+
+        .section-title-wrap { margin: 5px 0 18px; display: flex; align-items: center; gap: 10px; }
+        .section-title { font-size: 9px; font-weight: 800; color: #fff; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.6; }
+        .section-line { flex: 1; height: 1px; background: linear-gradient(to right, #222, transparent); }
+
+        /* Form Inputs */
+        .input-group { margin-bottom: 16px; }
+        .input-group label { display: block; font-size: 10px; color: var(--text-muted); margin-bottom: 7px; font-weight: 600; padding-left: 4px; }
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        .input-wrapper i:first-child { position: absolute; left: 16px; color: var(--accent-color); font-size: 18px; }
+        .input-wrapper input {
+            width: 100%; background: #050505; border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 14px 15px 14px 48px; color: #fff; font-size: 12.5px;
+            font-family: 'Montserrat', sans-serif; transition: 0.3s;
+        }
+        .input-wrapper input:focus { border-color: #444; background: #080808; outline: none; }
+        .toggle-password { position: absolute; right: 16px; color: #333; font-size: 18px; cursor: pointer; }
+
+        /* Agreement Checkbox */
+        .agreement { display: flex; align-items: center; gap: 10px; margin: 20px 5px; }
+        .agreement input { width: 16px; height: 16px; accent-color: var(--accent-color); flex-shrink: 0; cursor: pointer; }
+        .agreement p { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+        .agreement span { color: var(--accent-color); font-weight: 600; }
+
+        /* Display Button */
+        .btn-auth {
+            width: 100%; background: var(--accent-color); color: #fff; border: none; padding: 16px;
+            border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.4s;
+            font-family: 'Playfair Display', serif; /* Font Display sesuai permintaan */
+            box-shadow: 0 8px 20px rgba(255, 59, 48, 0.2);
+            position: relative; overflow: hidden;
+        }
+        .btn-auth:disabled { background: #1a1a1a; color: #444; opacity: 0.7; cursor: not-allowed; box-shadow: none; }
+        
+        .btn-auth:not(:disabled):active { transform: scale(0.97); }
+
+        /* Switch Text */
+        .switch-box { text-align: center; margin-top: 22px; padding-top: 18px; border-top: 1px solid #151515; }
+        .switch-box p { font-size: 11px; color: var(--text-muted); }
+        .switch-box span { color: var(--accent-color); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+        /* Popup Minimalis */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.97); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(10px);
+        }
+        .popup-card {
+            background: #000; border: 1px solid #222; width: 230px; padding: 35px 20px; border-radius: 30px; text-align: center;
+            transform: scale(0.9); opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .popup-card.show { transform: scale(1); opacity: 1; }
+
+        .spin-container { position: relative; width: 45px; height: 45px; margin: 0 auto 18px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .spinning-red { animation: spin 0.8s linear infinite; width: 45px; height: 45px; }
+        .circle-bg { fill: none; stroke: #111; stroke-width: 4; }
+        .circle-bar { fill: none; stroke: var(--accent-color); stroke-width: 4; stroke-dasharray: 80; stroke-dashoffset: 40; stroke-linecap: round; }
+        
+        .check-icon { font-size: 30px; color: var(--accent-color); display: none; margin-bottom: 15px; }
+        .popup-card h3 { font-size: 14px; font-weight: 600; color: #fff; font-family: 'Playfair Display', serif; }
+        .popup-card p { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="auth-hero animate-hero">
+    <h2 id="title">Daftar Akun</h2>
+    <p id="subtitle">Eksklusif akses untuk layanan VisionPay</p>
+</div>
+
+<div class="viewport animate-box">
+    <div class="auth-container" id="authSlide">
+        
+        <div class="form-section">
+            <div class="main-box">
+                <form onsubmit="runProgress(event, 'register')">
+                    <div class="section-title-wrap"><span class="section-title">Informasi Akun</span><div class="section-line"></div></div>
+                    
+                    <div class="input-group">
+                        <label>Nama Pengguna</label>
+                        <div class="input-wrapper"><i class="ri-user-line"></i><input type="text" id="regUser" placeholder="Masukkan nama asli" required></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>No. Telepon</label>
+                        <div class="input-wrapper"><i class="ri-whatsapp-line"></i><input type="number" id="regWa" placeholder="Masukkan nomor telepon " required></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Kata Sandi</label>
+                        <div class="input-wrapper">
+                            <i class="ri-lock-2-line"></i>
+                            <input type="password" id="passReg" placeholder="Buat kata sandi aman" required>
+                            <i class="ri-eye-off-line toggle-password" onclick="toggleVisibility('passReg', this)"></i>
+                        </div>
+                    </div>
+
+                    <div class="section-title-wrap"><span class="section-title">Opsional</span><div class="section-line"></div></div>
+                    
+                   <div class="input-group">
+    <label>Kode Undangan</label>
+    <div class="input-wrapper">
+        <i class="ri-coupon-3-line"></i>
+        <input type="text" id="regReferral" placeholder="Masukkan kode undangan">
+    </div>
+</div>
+
+                    <div class="agreement">
+                        <input type="checkbox" id="regCheck" required>
+                        <p>Saya setuju dengan <span>Syarat & Ketentuan</span></p>
+                    </div>
+
+                    <button type="submit" id="regBtn" class="btn-auth" disabled>Daftar Sekarang</button>
+                    
+                    <div class="switch-box">
+                        <p>Sudah punya akun? <span onclick="toggleAuth('login')">Masuk Disini</span></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="main-box">
+                <form onsubmit="runProgress(event, 'login')">
+                    <div class="section-title-wrap"><span class="section-title">Gerbang Masuk</span><div class="section-line"></div></div>
+                    
+                    <div class="input-group">
+                        <label>ID Pengguna</label>
+                        <div class="input-wrapper"><i class="ri-shield-user-line"></i><input type="text" id="loginId" placeholder="Masukkan nomo telepon" required></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Kata Sandi</label>
+                        <div class="input-wrapper">
+                            <i class="ri-key-2-line"></i>
+                            <input type="password" id="passLog" placeholder="Masukkan kata sandi" required>
+                            <i class="ri-eye-off-line toggle-password" onclick="toggleVisibility('passLog', this)"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="loginBtn" class="btn-auth" style="margin-top: 15px;" disabled>Masuk Sekarang</button>
+                    
+                    <div class="switch-box">
+                        <p>Belum bergabung? <span onclick="toggleAuth('register')">Buat Akun</span></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="popup-card" id="popup">
+        <div id="loader">
+            <div class="spin-container">
+                <svg class="spinning-red">
+                    <circle class="circle-bg" cx="22.5" cy="22.5" r="20"></circle>
+                    <circle class="circle-bar" cx="22.5" cy="22.5" r="20"></circle>
+                </svg>
+            </div>
+        </div>
+       <i class="ri-checkbox-circle-fill check-icon" id="checkIcon"></i>
+<i class="ri-close-circle-fill check-icon" id="errorIcon" style="color:#ff3b30;"></i>
+        <h3 id="popTitle">Memverifikasi...</h3>
+<p id="popSub">Keamanan enkripsi aktif.</p>
+    </div>
+</div>
+
+<script>
+    // Validasi Form Real-time
+    const rInputs = ['regUser', 'regWa', 'passReg'];
+    const lInputs = ['loginId', 'passLog'];
+
+    function checkForm() {
+        const rValid = rInputs.every(id => document.getElementById(id).value.trim() !== '') && document.getElementById('regCheck').checked;
+        const lValid = lInputs.every(id => document.getElementById(id).value.trim() !== '');
+        
+        document.getElementById('regBtn').disabled = !rValid;
+        document.getElementById('loginBtn').disabled = !lValid;
+    }
+
+    [...rInputs, ...lInputs].forEach(id => document.getElementById(id).addEventListener('input', checkForm));
+    document.getElementById('regCheck').addEventListener('change', checkForm);
+
+    function toggleVisibility(id, icon) {
+        const el = document.getElementById(id);
+        el.type = el.type === 'password' ? 'text' : 'password';
+        icon.classList.toggle('ri-eye-line');
+        icon.classList.toggle('ri-eye-off-line');
+    }
+
+    function toggleAuth(mode) {
+        const slide = document.getElementById('authSlide');
+        document.getElementById('title').innerText = mode === 'login' ? "Selamat Datang" : "Daftar Akun";
+        slide.classList.toggle('show-login', mode === 'login');
+    }
+</script>
+<script>
+    // Fungsi untuk mendeteksi parameter di URL saat halaman dimuat
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const action = urlParams.get('action');
+
+        if (action === 'login') {
+            // Menjalankan fungsi toggle yang sudah kita buat sebelumnya
+            toggleAuth('login');
+        }
+    };
+</script>
+<script>
+  /* ===============================
+   HELPER LOCAL STORAGE
+================================ */
+function getUsers() {
+    return JSON.parse(localStorage.getItem("users")) || [];
+}
+
+function saveUsers(users) {
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+function setCurrentUser(id) {
+    localStorage.setItem("currentUser", id);
+}
+
+/* ===============================
+   REGISTER USER
+================================ */
+/* ===============================
+   REGISTER USER (FORMAT WAKTU FIX)
+================================ */
+function registerUser() {
+    const username = document.getElementById("regUser").value.trim();
+    const phone = document.getElementById("regWa").value.trim();
+    const password = document.getElementById("passReg").value;
+    const referral = document.getElementById("regReferral").value.trim();
+
+    let users = getUsers();
+
+    if (users.find(u => u.phone === phone)) {
+        return { success: false, message: "Nomor telepon sudah terdaftar" };
+    }
+
+    // --- LOGIKA FORMAT WAKTU: 31 Des 2025 15.24.09 ---
+    const now = new Date();
+    const bulanIndo = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+    
+    const tgl = String(now.getDate()).padStart(2, '0');
+    const bln = bulanIndo[now.getMonth()];
+    const thn = now.getFullYear();
+    const jam = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+    const sec = String(now.getSeconds()).padStart(2, '0');
+
+    const waktuCustom = `${tgl} ${bln} ${thn} ${jam}.${min}.${sec}`;
+    // ------------------------------------------------
+
+    const BONUS_DAFTAR = 10000;
+
+    const user = {
+        id: "USR-" + Date.now(),
+        username,
+        phone,
+        password,
+        saldo: {
+            deposit: 7700000,
+            tersedia: BONUS_DAFTAR,
+            totalPendapatan: BONUS_DAFTAR,
+            pendapatanHariIni: BONUS_DAFTAR
+        },
+        planAktif: "-",
+        bankRekening: null,
+        bonus: { kodeReferral: referral || null, totalBonus: BONUS_DAFTAR, riwayat: [] },
+        tugas: { hariIni: 0, terakhirReset: new Date().toDateString(), riwayat: [] },
+        catatan: [
+            {
+                id: "CAT-" + Date.now(),
+                tipe: "bonus_pendaftaran",
+                judul: "Bonus Pendaftaran",
+                keterangan: "Member baru VisionPay",
+                tanggal: waktuCustom, // Format: 31 Des 2025 15.24.09
+                total: BONUS_DAFTAR,
+                status: "Berhasil"
+            }
+        ]
+    };
+
+    users.push(user);
+    saveUsers(users);
+    setCurrentUser(user.id);
+
+    return { success: true };
+}
+
+/* ===============================
+   LOGIN USER
+================================ */
+function loginUser() {
+    const phone = document.getElementById("loginId").value.trim();
+    const password = document.getElementById("passLog").value;
+
+    const users = getUsers();
+    const user = users.find(u => u.phone === phone);
+
+    if (!user) {
+        return { success: false, message: "Nomor tidak ditemukan" };
+    }
+
+    if (user.password !== password) {
+        return { success: false, message: "Kata sandi salah" };
+    }
+
+    setCurrentUser(user.id);
+    return { success: true };
+}
+
+/* ===============================
+   PROGRESS POPUP HANDLER
+================================ */
+function runProgress(e, type) {
+    e.preventDefault();
+
+    let result;
+
+    if (type === 'register') {
+        result = registerUser();
+
+        if (!result.success) {
+            showPopup({
+                success: false,
+                title: "Pendaftaran Gagal",
+                subtitle: result.message
+            });
+            return;
+        }
+
+        showPopup({
+            success: true,
+            title: "Pendaftaran Berhasil",
+            subtitle: "Akun berhasil dibuat!",
+            redirect: "profil.html"
+        });
+    }
+
+    if (type === 'login') {
+        result = loginUser();
+
+        if (!result.success) {
+            showPopup({
+                success: false,
+                title: "Login Gagal",
+                subtitle: result.message
+            });
+            return;
+        }
+
+        showPopup({
+            success: true,
+            title: "Login Berhasil",
+            subtitle: "Selamat datang kembali!",
+            redirect: "profil.html"
+        });
+    }
+}
+</script>
+<script>
+function showPopup({ success, title, subtitle, redirect = null }) {
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const loader = document.getElementById('loader');
+    const checkIcon = document.getElementById('checkIcon');
+    const errorIcon = document.getElementById('errorIcon');
+
+    overlay.style.display = 'flex';
+    popup.classList.add('show');
+
+    loader.style.display = 'block';
+    checkIcon.style.display = 'none';
+    errorIcon.style.display = 'none';
+
+    document.getElementById('popTitle').innerText = "Memverifikasi...";
+    document.getElementById('popSub').innerText = "Mohon tunggu...";
+
+    setTimeout(() => {
+        loader.style.display = 'none';
+
+        if (success) {
+            checkIcon.style.display = 'block';
+        } else {
+            errorIcon.style.display = 'block';
+        }
+
+        document.getElementById('popTitle').innerText = title;
+        document.getElementById('popSub').innerText = subtitle;
+
+        if (redirect) {
+            setTimeout(() => {
+                window.location.href = redirect;
+            }, 1500);
+        } else {
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                popup.classList.remove('show');
+            }, 2000);
+        }
+
+    }, 1800);
+}
+
+/* ===============================
+   AUTO-FILL REFERRAL DARI URL
+================================ */
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Ambil parameter 'ref' dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    
+    // 2. Jika ada kode referal di URL
+    if (refCode) {
+        const refInput = document.getElementById('regReferral');
+        
+        if (refInput) {
+            // Isi nilai input dengan kode dari URL
+            refInput.value = refCode.toUpperCase();
+            
+            // Kunci input agar tidak bisa diubah (Read Only)
+            refInput.readOnly = true;
+            
+            // Opsional: Ubah gaya visual agar user tahu ini terkunci
+            refInput.style.backgroundColor = "#111";
+            refInput.style.color = "var(--accent-color)";
+            refInput.style.fontWeight = "bold";
+            refInput.style.cursor = "not-allowed";
+            
+            // Opsional: Ganti placeholder agar lebih informatif
+            refInput.placeholder = "Kode Referral Terpasang";
+        }
+    }
+});
+</script>
+</body>
+</html>

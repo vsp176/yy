@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VisionPay - Full Bank System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --accent-color: #ff3b30;
+            --border-color: #1a1a1a;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --side-margin: 22px; 
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes sweep {
+            0% { left: -110%; }
+            30% { left: 110%; }
+            100% { left: 110%; }
+        }
+
+        @keyframes scrollInfinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background-color: var(--bg-color); color: #ececec; 
+            font-family: var(--font-sans); padding-bottom: 50px; overflow-x: hidden;
+        }
+
+        .container { padding: 90px var(--side-margin) 0 var(--side-margin); }
+
+header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 10px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        .hero-section { margin-bottom: 25px; animation: fadeInUp 0.5s ease forwards; }
+        .hero-section h1 { font-family: var(--font-serif); font-size: 28px; font-weight: 700; color: #fff; }
+
+        /* VIRTUAL CARD PREVIEW */
+        .bank-card-preview {
+            width: 100%; height: 170px;
+            background: linear-gradient(135deg, #111 0%, #050505 100%);
+            border: 1px solid #222; border-radius: 20px;
+            padding: 25px; margin-bottom: 35px;
+            position: relative; display: flex; flex-direction: column; justify-content: space-between;
+            overflow: hidden; animation: fadeInUp 0.6s ease forwards;
+        }
+        .bank-name-display { font-family: var(--font-serif); font-size: 14px; color: var(--accent-color); font-weight: 700; }
+        .card-number-display { font-size: 18px; letter-spacing: 3px; color: #fff; margin-top: 15px; font-weight: 500; }
+        .card-holder-display { font-size: 11px; text-transform: uppercase; color: #555; }
+
+        /* SLIDER SYSTEM */
+        .input-label { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12px; font-weight: 600; color: #fff; }
+        .input-label i { color: var(--accent-color); font-size: 16px; }
+
+        .slider-wrapper {
+            width: 100vw; margin-left: calc(-1 * var(--side-margin));
+            overflow-x: auto; scrollbar-width: none;
+            padding: 10px 0; margin-bottom: 30px;
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            cursor: grab;
+        }
+        .slider-wrapper::-webkit-scrollbar { display: none; }
+
+        .bank-slider {
+            display: flex; width: fit-content;
+            animation: scrollInfinite 15s linear infinite;
+            will-change: transform;
+        }
+
+        .bank-option {
+            flex-shrink: 0; width: 100px; height: 100px; margin: 0 8px;
+            background: #0a0a0a; border: 1px solid var(--border-color);
+            border-radius: 18px; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; gap: 8px;
+            position: relative; overflow: hidden; transition: 0.3s;
+        }
+
+        .bank-option::after {
+            content: ""; position: absolute; top: 0; height: 100%; width: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: skewX(-25deg); left: -150%; animation: sweep 4s infinite ease-in-out;
+        }
+
+        .logo-wrapper {
+            width: 55px; height: 50px; background: #ffffff; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; padding: 6px;
+        }
+        .bank-logo { width: 100%; height: 100%; object-fit: contain; }
+        .bank-option span { font-size: 10px; font-weight: 800; color: #444; text-transform: uppercase; text-align: center; }
+
+        .bank-option.active {
+            border-color: var(--accent-color);
+            background: rgba(255, 59, 48, 0.1);
+            transform: translateY(-5px);
+        }
+        .bank-option.active span { color: #fff; }
+
+        /* INPUTS */
+        .input-group { margin-bottom: 20px; animation: fadeInUp 0.7s ease forwards; }
+        .custom-input, .file-input-wrapper {
+            width: 100%; background: #0a0a0a; border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 16px; color: #fff; font-size: 14px; outline: none;
+        }
+        .file-input-wrapper { display: flex; align-items: center; justify-content: center; border: 1px dashed #333; cursor: pointer; gap: 10px; color: #888; }
+        #qrisFileInput { display: none; }
+
+        .btn-save {
+            width: 100%; background: var(--accent-color); color: #fff; border: none;
+            padding: 18px; border-radius: 14px; font-family: var(--font-serif);
+            font-weight: 700; font-size: 15px; margin-top: 15px;
+        }
+        .hidden { display: none; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.97); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(10px);
+        }
+        .popup-card {
+            background: #000; border: 1px solid #222; width: 230px; padding: 35px 20px; border-radius: 30px; text-align: center;
+            transform: scale(0.9); opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .popup-card.show { transform: scale(1); opacity: 1; }
+
+        .spin-container { position: relative; width: 45px; height: 45px; margin: 0 auto 18px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .spinning-red { animation: spin 0.8s linear infinite; width: 45px; height: 45px; }
+        .circle-bg { fill: none; stroke: #111; stroke-width: 4; }
+        .circle-bar { fill: none; stroke: var(--accent-color); stroke-width: 4; stroke-dasharray: 80; stroke-dashoffset: 40; stroke-linecap: round; }
+        
+        .check-icon { font-size: 30px; color: var(--accent-color); display: none; margin-bottom: 15px; }
+        .popup-card h3 { font-size: 14px; font-weight: 600; color: #fff; font-family: 'Playfair Display', serif; }
+        .popup-card p { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1>Rekening Bank</h1>
+            <p style="color: #666; font-size: 13px;">Kelola data rekening bank Anda.</p>
+        </div>
+
+        <div class="bank-card-preview">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="width:40px; height:25px; background: linear-gradient(135deg, #d4af37, #f9e29c); border-radius:5px;"></div>
+                <span class="bank-name-display" id="displayBank">PILIH METODE</span>
+            </div>
+            <div>
+                <div class="card-number-display" id="displayNumber">**** **** **** ****</div>
+                <div class="card-holder-display" id="displayName">NAMA PEMILIK</div>
+            </div>
+        </div>
+
+        <div>
+            <div class="input-label"><i class="ri-bank-line"></i><span>Daftar Bank & E-Wallet Terlengkap</span></div>
+            
+            <div class="slider-wrapper" id="sliderWrapper">
+                <div class="bank-slider" id="sliderBody"></div>
+            </div>
+
+            <div id="accountInputGroup" class="input-group">
+                <div class="input-label"><i class="ri-list-ordered"></i><span>Nomor Rekening </span></div>
+                <input type="number" class="custom-input" id="inputNumber" placeholder="Masukkan nomor" oninput="updateCard()">
+            </div>
+
+            <div id="qrisInputGroup" class="input-group hidden">
+                <div class="input-label"><i class="ri-qr-scan-2-line"></i><span>Upload Kode QRIS</span></div>
+                <label for="qrisFileInput" class="file-input-wrapper">
+                    <i class="ri-upload-2-fill"></i>
+                    <span id="fileNameDisplay">Pilih Gambar QRIS</span>
+                </label>
+                <input type="file" id="qrisFileInput" accept="image/*" onchange="handleFile(this)">
+            </div>
+
+            <div class="input-group">
+                <div class="input-label"><i class="ri-user-received-2-line"></i><span id="nameLabelText">Nama Sesuai Rekening</span></div>
+                <input type="text" class="custom-input" id="inputName" placeholder="Masukkan nama lengkap" oninput="updateCard()">
+            </div>
+
+            <button class="btn-save">Simpan Perubahan</button>
+        </div>
+    </div>
+<div class="overlay" id="overlay" style="display:none">
+    <div class="popup-card" id="popup">
+        <div id="loader">
+            <div class="spin-container">
+                <svg class="spinning-red">
+                    <circle class="circle-bg" cx="22.5" cy="22.5" r="20"></circle>
+                    <circle class="circle-bar" cx="22.5" cy="22.5" r="20"></circle>
+                </svg>
+            </div>
+        </div>
+
+        <i class="ri-checkbox-circle-fill check-icon" id="checkIcon" style="font-size: 30px; color: var(--accent-color); display: none; margin-bottom: 15px;"></i>
+
+        <h3 id="popTitle" style="font-size: 14px; font-weight: 600; color: #fff; font-family: var(--font-serif);">Memproses...</h3>
+        <p id="popSub" style="font-size: 10px; color: #777; margin-top: 6px;">Mohon tunggu</p>
+    </div>
+</div>
+    <script>
+        const fullBankData = [
+            { id: 'BCA', name: 'BCA', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg' },
+            { id: 'BNI', name: 'BNI', logo: 'Img/bni.jpg' },
+            { id: 'MANDIRI', name: 'Mandiri', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg' },
+            { id: 'BRI', name: 'BRI', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/BRI_2020.svg' },
+            { id: 'BSI', name: 'BSI', logo: 'Img/bsi.jpg' },
+            { id: 'SEABANK', name: 'SeaBank', logo: 'Img/seabank.jpg' },
+            { id: 'CIMB', name: 'CIMB Niaga', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/38/CIMB_Niaga_logo.svg' },
+            { id: 'JAGO', name: 'Bank Jago', logo: 'Img/jago.jpg' },
+            { id: 'NEO', name: 'Neo Bank', logo: 'Img/neo.jpg' },
+            { id: 'ALLO', name: 'Allo Bank', logo: 'Img/allo.jpg' },
+            { id: 'PERMATA', name: 'Permata', logo: 'Img/permata.jpg' },
+            { id: 'DANAMON', name: 'Danamon', logo: 'Img/danamon.jpg' },
+            { id: 'MAYBANK', name: 'Maybank', logo: 'Img/maybank.jpg' },
+            { id: 'DANA', name: 'DANA', logo: 'Img/dana.jpg' },
+            { id: 'OVO', name: 'OVO', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg' },
+            { id: 'GOPAY', name: 'GoPay', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg' },
+            { id: 'SHOPEEPAY', name: 'ShopeePay', logo: 'Img/shopeepay.jpg' },
+            { id: 'LINKAJA', name: 'LinkAja', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/85/LinkAja.svg' },
+            { id: 'QRIS', name: 'QRIS', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg' }
+        ];
+
+        const sliderBody = document.getElementById('sliderBody');
+        const sliderWrapper = document.getElementById('sliderWrapper');
+        let isLocked = false;
+
+        function renderBanks() {
+            const items = fullBankData.map(bank => `
+                <div class="bank-option" onclick="selectBank(this, '${bank.id}')">
+                    <div class="logo-wrapper"><img src="${bank.logo}" class="bank-logo"></div>
+                    <span>${bank.name}</span>
+                </div>
+            `).join('');
+            sliderBody.innerHTML = items + items;
+        }
+
+        function freezeSlider() {
+            if (isLocked) return;
+            const style = window.getComputedStyle(sliderBody);
+            const matrix = new WebKitCSSMatrix(style.transform);
+            sliderBody.style.animation = 'none';
+            sliderBody.style.transform = `translateX(${matrix.m41}px)`;
+            isLocked = true;
+        }
+
+        sliderWrapper.addEventListener('touchstart', freezeSlider);
+        sliderWrapper.addEventListener('mousedown', freezeSlider);
+
+        function selectBank(element, name) {
+            freezeSlider();
+            document.querySelectorAll('.bank-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+            
+            document.getElementById('displayBank').innerText = name;
+            const accGroup = document.getElementById('accountInputGroup');
+            const qrisGroup = document.getElementById('qrisInputGroup');
+            const nameLabel = document.getElementById('nameLabelText');
+
+            if (name === 'QRIS') {
+                accGroup.classList.add('hidden');
+                qrisGroup.classList.remove('hidden');
+                document.getElementById('displayNumber').innerText = "VIRTUAL QRIS";
+                nameLabel.innerText = "Masukkan Nama QRIS";
+            } else {
+                accGroup.classList.remove('hidden');
+                qrisGroup.classList.add('hidden');
+                nameLabel.innerText = "Nama Sesuai Rekening";
+                updateCard();
+            }
+        }
+
+        function updateCard() {
+            const number = document.getElementById('inputNumber').value;
+            const name = document.getElementById('inputName').value;
+            const bank = document.getElementById('displayBank').innerText;
+            if (bank !== 'QRIS') {
+                document.getElementById('displayNumber').innerText = number || "**** **** **** ****";
+            }
+            document.getElementById('displayName').innerText = name || "NAMA PEMILIK";
+        }
+
+        function handleFile(input) {
+            if(input.files[0]) document.getElementById('fileNameDisplay').innerText = input.files[0].name;
+        }
+
+        renderBanks();
+        document.querySelector('.btn-save').addEventListener('click', () => {
+    // 1. Ambil Data
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const currentUserId = localStorage.getItem("currentUser");
+    const userIndex = users.findIndex(u => u.id === currentUserId);
+    
+    const selectedBank = document.getElementById('displayBank').innerText;
+    const inputNumber = document.getElementById('inputNumber').value;
+    const inputName = document.getElementById('inputName').value;
+
+    // 2. Validasi Sederhana
+    if (selectedBank === "PILIH METODE") return alert("Silakan pilih bank terlebih dahulu");
+    if (selectedBank !== 'QRIS' && !inputNumber) return alert("Nomor rekening wajib diisi");
+    if (!inputName) return alert("Nama pemilik wajib diisi");
+
+    // 3. Tampilkan Popup Loading
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const loader = document.getElementById('loader');
+    const checkIcon = document.getElementById('checkIcon');
+    const popTitle = document.getElementById('popTitle');
+    const popSub = document.getElementById('popSub');
+
+    overlay.style.display = "flex";
+    setTimeout(() => popup.classList.add('show'), 10);
+
+    // 4. Simulasi Proses Simpan
+    setTimeout(() => {
+        // Cari logo dari data
+        const bankData = fullBankData.find(b => b.id === selectedBank);
+
+        // Update data user
+        users[userIndex].bankRekening = {
+            namaBank: selectedBank,
+            nomorRekening: selectedBank === 'QRIS' ? "QRIS ACTIVE" : inputNumber,
+            namaPemilik: inputName,
+            logoBank: bankData.logo
+        };
+
+        // Simpan ke LocalStorage
+        localStorage.setItem("users", JSON.stringify(users));
+
+        // 5. Ubah Tampilan ke Berhasil (Sesuai gaya VIP)
+        loader.style.display = "none";
+        checkIcon.style.display = "inline-block";
+        popTitle.innerText = "Berhasil";
+        popSub.innerText = "Data rekening telah disimpan";
+
+        // 6. Redirect ke Halaman Penarikan
+        setTimeout(() => {
+            window.location.href = "penarikan.html";
+        }, 1600);
+
+    }, 1200); // Durasi loading 1.2 detik
+});
+    </script>
+</body>
+</html>

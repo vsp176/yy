@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Playing Video</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #0a0a0a;
+            --accent-color: #ff3b30;
+            --border-color: #151515;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --side-margin: 20px; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: #fff; font-family: var(--font-sans); }
+
+        /* HEADER */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 20px; position: fixed; top: 0; left: 0; right: 0;
+            background: #0a0a0a; z-index: 1000; border-bottom: 1px solid var(--border-color); 
+        }
+        body { padding-top: 75px; }
+
+        .header-icons { display: flex; gap: 12px; align-items: center; }
+        .icon-box {
+            width: 40px; height: 40px; background-color: #1a1a1a; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; text-decoration: none;
+        }
+        .icon-box i { font-size: 20px; color: #ffffff; }
+
+        /* VIDEO */
+        .video-container {
+            width: 100%; aspect-ratio: 16/9; background: #000;
+            position: relative; margin-bottom: 15px;
+        }
+        .video-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* CONTENT */
+        .content { padding: 0 var(--side-margin); }
+
+        /* JUDUL BERJALAN */
+        .video-title-container {
+            width: 100%; overflow: hidden; white-space: nowrap;
+            margin-bottom: 10px; background: rgba(255,255,255,0.03);
+            padding: 10px 0; border-radius: 5px;
+        }
+        .video-title-container h1 {
+            display: inline-block; font-size: 15px; font-weight: 700;
+            padding-left: 100%; animation: marquee 15s linear infinite; color: #fff;
+        }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        .video-meta { 
+            font-size: 11px; color: #666; margin-bottom: 25px; 
+            display: flex; justify-content: space-between; font-weight: 600;
+        }
+
+        /* BUTTON KLAIM - FONT KLASIK */
+        .btn-claim {
+            width: 100%; 
+            padding: 15px 0;
+            border-radius: 12px;
+            border: none;
+            /* Font Klasik & Ukuran Pas */
+            font-family: var(--font-serif); 
+            font-size: 14px; 
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #1a1a1a;
+            color: #444;
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .btn-claim.active {
+            background: var(--accent-color);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4);
+        }
+
+        /* BOX PENJELASAN */
+        .info-box {
+            background: #050505; border: 1px solid var(--border-color);
+            padding: 18px; border-radius: 15px; margin-bottom: 50px;
+        }
+        .info-box h4 { 
+            font-size: 12px; color: var(--accent-color); margin-bottom: 10px; 
+            display: flex; align-items: center; gap: 8px; text-transform: uppercase;
+        }
+        .info-box p { font-size: 12px; color: #aaa; line-height: 1.6; margin-bottom: 10px; }
+        .info-box ul { padding-left: 18px; font-size: 11px; color: #777; }
+        .info-box li { margin-bottom: 6px; }
+ .glow-ultimate { border-color: rgba(255, 59, 48, 0.6); box-shadow: 0 0 20px rgba(255, 59, 48, 0.15); }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.97); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(10px);
+        }
+        .popup-card {
+            background: #000; border: 1px solid #222; width: 230px; padding: 35px 20px; border-radius: 30px; text-align: center;
+            transform: scale(0.9); opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .popup-card.show { transform: scale(1); opacity: 1; }
+
+        .spin-container { position: relative; width: 45px; height: 45px; margin: 0 auto 18px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .spinning-red { animation: spin 0.8s linear infinite; width: 45px; height: 45px; }
+        .circle-bg { fill: none; stroke: #111; stroke-width: 4; }
+        .circle-bar { fill: none; stroke: var(--accent-color); stroke-width: 4; stroke-dasharray: 80; stroke-dashoffset: 40; stroke-linecap: round; }
+        
+        .check-icon { font-size: 30px; color: var(--accent-color); display: none; margin-bottom: 15px; }
+        .popup-card h3 { font-size: 14px; font-weight: 600; color: #fff; font-family: 'Playfair Display', serif; }
+        .popup-card p { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="beranda.html">
+            <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+        </a>
+        <div class="header-icons">
+            <a href="vip.html" class="icon-box"><i class="ri-vip-crown-fill" style="color:#ff3b30"></i></a>
+            <a href="customer-service.html" class="icon-box"><i class="ri-customer-service-2-fill"></i></a>
+            <a href="film.html" class="icon-box"><i class="ri-video-line"></i></a>
+        </div>
+    </header>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div class="content">
+        <div class="video-title-container">
+            <h1 id="movingTitle">Exclusive Video Task - Tonton video selama 60 detik untuk mendapatkan reward saldo sebesar Rp 10.000</h1>
+        </div>
+
+        <div class="video-meta">
+            <span>Hadiah: Rp 5.000</span>
+            <span><i class="ri-time-line"></i> 1 Menit</span>
+        </div>
+
+        <button id="btnClaim" class="btn-claim" disabled>
+            <i class="ri-lock-2-line"></i> Tunggu 60S
+        </button>
+
+        <div class="info-box">
+            <h4><i class="ri-information-fill"></i> Instruksi Tugas</h4>
+            <p>Pastikan langkah Anda benar agar hadiah tugas dapat diterima:</p>
+            <ul>
+                <li>Selesaikan tontonan hingga timer 60 detik berakhir.</li>
+                <li>Klik button klaim yang berubah warna menjadi merah.</li>
+                <li>Satu tugas hanya bisa diklaim satu kali per sesi.</li>
+            </ul>
+        </div>
+    </div>
+<div class="overlay" id="overlay" style="display:none">
+    <div class="popup-card" id="popup">
+        <div id="loader">
+            <div class="spin-container">
+                <svg class="spinning-red">
+                    <circle class="circle-bg" cx="22.5" cy="22.5" r="20"></circle>
+                    <circle class="circle-bar" cx="22.5" cy="22.5" r="20"></circle>
+                </svg>
+            </div>
+        </div>
+
+        <i class="ri-checkbox-circle-fill check-icon" id="checkIcon" style="font-size: 30px; color: var(--accent-color); display: none; margin-bottom: 15px;"></i>
+
+        <h3 id="popTitle">Memproses...</h3>
+        <p id="popSub">Mohon tunggu</p>
+    </div>
+</div>
+<script>
+ // Menambahkan gaya animasi secara dinamis ke dalam dokumen
+const style = document.createElement('style');
+style.innerHTML = `
+    @keyframes smoothShow {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .info-animate {
+        animation: smoothShow 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+`;
+document.head.appendChild(style);   /* ===========================================================
+       1. DATABASE & AUTHENTICATION
+    =========================================================== */
+    function getUsers() { return JSON.parse(localStorage.getItem("users")) || []; }
+    function saveUsers(users) { localStorage.setItem("users", JSON.stringify(users)); }
+    function getCurrentUser() {
+        const id = localStorage.getItem("currentUser");
+        return getUsers().find(u => u.id === id);
+    }
+
+    let user = getCurrentUser();
+    if (!user) { window.location.href = "daftar.html?action=login"; }
+
+    /* ===========================================================
+       2. LOGIKA AUTO-RESET GANTI HARI (PENTING!)
+    =========================================================== */
+    // Format tanggal: "31/12/2025"
+    const hariSekarang = new Date().toLocaleDateString('id-ID'); 
+
+    if (user.tugas.terakhirKerja !== hariSekarang) {
+        // Jika ganti hari, reset progres tugas & pendapatan harian
+        user.tugas.hariIni = 0;
+        user.saldo.pendapatanHariIni = 0;
+        user.tugas.terakhirKerja = hariSekarang;
+        
+        // Simpan perubahan reset ke database
+        const updatedUsers = getUsers().map(u => u.id === user.id ? user : u);
+        saveUsers(updatedUsers);
+    }
+
+    /* ===========================================================
+       3. KONFIGURASI REWARD & DATA URL
+    =========================================================== */
+    const REWARD_PLAN = {
+        BASIC: 0, MAGANG: 5000, V1: 5000, V2: 7000, 
+        V3: 9000, V4: 14000, V5: 20000, V6: 32000, V7: 55000
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoId = urlParams.get('v') || 'dQw4w9WgXcQ';
+    const videoTitle = urlParams.get('title') || 'Exclusive Video Task';
+    const hadiah = REWARD_PLAN[user.planAktif] || 0;
+
+    // Inisialisasi Element UI
+    const btnClaim = document.getElementById('btnClaim');
+    const player = document.querySelector('.video-container iframe');
+    document.getElementById('movingTitle').innerText = videoTitle;
+    
+    const displayHadiah = document.querySelector('.video-meta span:first-child');
+    if (displayHadiah) displayHadiah.innerText = `Hadiah: Rp ${hadiah.toLocaleString('id-ID')}`;
+
+    /* ===========================================================
+       4. LOGIKA FILTER TAMPILAN (CHECKER)
+    =========================================================== */
+    const sisaTugas = (user.tugas.limit || 0) - (user.tugas.hariIni || 0);
+
+    // KONDISI A: BELUM UPGRADE (BASIC)
+    if (user.planAktif === "BASIC" || !user.tugas.limit || user.tugas.limit === 0) {
+        tampilkanPesan(
+            "Tugas Belum Tersedia",
+            "Anda belum mengaktifkan paket Vision. Silakan aktifkan paket Magang (Gratis) atau VIP untuk mulai mengerjakan tugas.",
+            "Lihat Paket Vision",
+            "vip.html",
+            "ri-lock-2-fill"
+        );
+    } 
+    // KONDISI B: LIMIT HARIAN HABIS
+    else if (sisaTugas <= 0) {
+        tampilkanPesan(
+            "Target Tercapai!",
+            "Tugas harian Anda telah mencapai target hari ini. Silakan upgrade level VIP untuk kuota lebih banyak atau kembali lagi besok.",
+            "Upgrade VIP Sekarang",
+            "vip.html",
+            "ri-checkbox-circle-fill"
+        );
+    } 
+    // KONDISI C: NORMAL (BISA BEKERJA)
+    else {
+        player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&disablekb=1&modestbranding=1`;
+        mulaiTimer();
+    }
+
+    /* ===========================================================
+       5. FUNGSI HELPER (UI & TIMER)
+    =========================================================== */
+    function tampilkanPesan(judul, pesan, labelTombol, link, ikon) {
+    // 1. Matikan Video
+    document.querySelector('.video-container').innerHTML = `
+        <div style="height:100%; display:flex; align-items:center; justify-content:center; background:#0a0a0a; color:var(--accent-color);">
+            <i class="${ikon}" style="font-size:50px; opacity:0.3;"></i>
+        </div>`;
+    
+    // 2. Ganti Konten Bawah dengan class "info-animate" untuk animasi mulus
+    document.querySelector('.content').innerHTML = `
+        <div class="info-animate" style="background:#0a0a0a; border:1px solid #151515; padding:35px 20px; border-radius:25px; text-align:center; margin-top:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <i class="${ikon}" style="font-size:45px; color:var(--accent-color); margin-bottom:15px; display:inline-block;"></i>
+            <h3 style="color:#fff; margin-bottom:12px; font-family:var(--font-serif); font-size:20px;">${judul}</h3>
+            <p style="font-size:12px; color:#777; line-height:1.7; margin-bottom:25px;">${pesan}</p>
+            <a href="${link}" style="display:inline-block; background:var(--accent-color); color:#fff; padding:14px 30px; border-radius:12px; text-decoration:none; font-weight:700; font-size:13px; font-family:var(--font-serif); box-shadow: 0 5px 15px rgba(255,59,48,0.2); transition: 0.3s;">
+                ${labelTombol}
+            </a>
+        </div>
+        <div class="info-animate" style="animation-delay: 0.2s;">
+            <a href="profil.html" style="display:block; text-align:center; margin-top:30px; color:#444; font-size:12px; text-decoration:none; font-weight:600;">
+                <i class="ri-arrow-left-s-line"></i> Kembali
+            </a>
+        </div>
+    `;
+}
+
+    function mulaiTimer() {
+        let timeLeft = 5;
+        const countdown = setInterval(() => {
+            timeLeft--;
+            if (timeLeft > 0) {
+                btnClaim.innerHTML = `<i class="ri-time-line"></i> Tunggu ${timeLeft}S`;
+            } else {
+                clearInterval(countdown);
+                btnClaim.classList.add('active');
+                btnClaim.removeAttribute('disabled');
+                btnClaim.innerHTML = `<i class="ri-gift-fill"></i> Klaim Hadiah Rp ${hadiah.toLocaleString('id-ID')}`;
+            }
+        }, 1000);
+    }
+
+    /* ===========================================================
+       6. EKSEKUSI KLAIM HADIAH
+    =========================================================== */
+    /* ===========================================================
+   EKSEKUSI KLAIM HADIAH (DENGAN POPUP LOADING)
+=========================================================== */
+/* ===========================================================
+   EKSEKUSI KLAIM HADIAH (POPUP PROPORSIONAL)
+=========================================================== */
+/* ===========================================================
+   EKSEKUSI KLAIM HADIAH (SINKRON DENGAN HALAMAN VIP)
+=========================================================== */
+/* ===========================================================
+   EKSEKUSI KLAIM HADIAH (VERSI FULL)
+=========================================================== */
+btnClaim.onclick = () => {
+    if (btnClaim.classList.contains('active')) {
+        
+        // 1. Inisialisasi Suara (Bunyi Uang Masuk)
+        const soundChing = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+        soundChing.volume = 0.6;
+
+        // 2. Tampilkan Overlay & Popup Loading
+        const overlay = document.getElementById("overlay");
+        const popup = document.getElementById("popup");
+        
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("checkIcon").style.display = "none";
+        document.getElementById("popTitle").innerText = "Memproses...";
+        document.getElementById("popSub").innerText = "Mengirim hadiah ke saldo...";
+        
+        overlay.style.display = "flex";
+        setTimeout(() => {
+            popup.classList.add("show");
+        }, 10);
+
+        // 3. Logika Pemotongan Nama Film (Maksimal 2 Kata)
+        const potongNamaFilm = (judul) => {
+            const kata = judul.split(" ");
+            if (kata.length > 2) {
+                return kata.slice(0, 2).join(" ") + "...";
+            }
+            return judul;
+        };
+
+        // 4. Proses Logika Data (Delay 1.5 detik agar terlihat prosesnya)
+        setTimeout(() => {
+            // A. Update Saldo & Statistik User
+            user.saldo.tersedia += hadiah;
+            user.saldo.totalPendapatan += hadiah;
+            user.saldo.pendapatanHariIni += hadiah;
+            user.tugas.hariIni += 1;
+            user.tugas.terakhirKerja = hariSekarang;
+
+            // B. Masukkan ke Riwayat Transaksi (Sesuai format riwayat.html)
+            // B. Masukkan ke Riwayat Transaksi (DENGAN DETIK)
+user.catatan.push({
+    id: "TASK-" + Date.now(),
+    tipe: "tugas",
+    judul: `Hadiah Tugas ${user.planAktif}`,
+    keterangan: `Film: ${potongNamaFilm(videoTitle)}`,
+    total: hadiah,
+    tanggal: new Date().toLocaleString("id-ID", { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit' // <--- MENAMBAHKAN DETIK DISINI
+    }).replace(/\./g, ':'), // Mengubah titik menjadi titik dua (14:05:01)
+    status: "Berhasil"
+});
+
+            // C. Simpan ke Database LocalStorage
+            const allUsers = getUsers().map(u => u.id === user.id ? user : u);
+            saveUsers(allUsers);
+
+            // 5. Update UI Popup ke Status Berhasil
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("checkIcon").style.display = "block";
+            document.getElementById("popTitle").innerText = "Tugas Berhasil";
+            document.getElementById("popSub").innerText = `Rp ${hadiah.toLocaleString('id-ID')} ditambahkan`;
+
+            // 6. Jalankan Suara "Ching"
+            soundChing.play().catch(e => console.log("Audio block by browser"));
+
+            // 7. Redirect ke Profil setelah 1.2 detik
+            setTimeout(() => {
+                window.location.href = 'profil.html';
+            }, 1200);
+
+        }, 1500); 
+    }
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionPay - Pembayaran QRIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #111111;
+            --accent-color: #ff3b30;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --border-color: #222222;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Montserrat', sans-serif; padding-top: 20px; padding-bottom: 30px; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up { animation: fadeInUp 0.5s ease forwards; opacity: 0; }
+
+        /* Timer Box */
+        .timer-box { 
+            margin: 15px 18px; padding: 12px; background: rgba(255, 59, 48, 0.05); 
+            border: 1px dashed var(--accent-color); border-radius: 12px; text-align: center;
+        }
+        .timer-box p { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+        .timer-box span { font-size: 16px; font-weight: 700; color: var(--accent-color); }
+
+        /* QRIS Card */
+        .qris-card {
+            margin: 0 18px 20px; background: #fff; border-radius: 20px; padding: 25px;
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .qris-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .qris-header img { height: 22px; }
+        
+        /* Area Gambar QRIS Anda */
+        .qris-wrapper {
+            width: 100%;
+            max-width: 260px;
+            margin: 0 auto;
+            border: 1px solid #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .qris-wrapper img {
+            width: 100%;
+            display: block;
+            border-radius: 5px;
+        }
+
+        .qris-footer { margin-top: 15px; color: #000; }
+        .qris-footer p { font-size: 11px; font-weight: 700; color: #333; }
+        
+        /* Amount Card */
+        .amount-box {
+            margin: 0 18px 25px; background: var(--card-color); 
+            border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; text-align: center;
+        }
+        .amount-box p { font-size: 10px; color: var(--text-muted); margin-bottom: 5px; }
+        .amount-box h2 { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+        
+        .copy-btn { 
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; 
+            background: #1a1a1a; padding: 10px 20px; border-radius: 100px;
+            font-size: 11px; color: var(--accent-color); font-weight: 700; cursor: pointer;
+        }
+
+        /* Instructions */
+        .instruction-list { margin: 0 18px; display: flex; flex-direction: column; gap: 10px; }
+        .step-item {
+            background: var(--card-color); border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 12px;
+        }
+        .step-number { 
+            background: var(--accent-color); color: #fff; width: 22px; height: 22px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 800; flex-shrink: 0;
+        }
+        .step-text { font-size: 11px; color: #bbb; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<div class="timer-box animate-up" style="animation-delay: 0.1s;">
+    <p>Selesaikan pembayaran dalam waktu</p>
+    <span id="countdown">14:59</span>
+</div>
+
+<div class="qris-card animate-up" style="animation-delay: 0.2s;">
+    <div class="qris-header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS">
+
+    </div>
+    
+    <div class="qris-wrapper">
+        <img src="qr99.jpg" alt="Scan QRIS untuk Bayar">
+    </div>
+
+    <div class="qris-footer">
+        <p style="letter-spacing: 1px;">NMID : ID1020304050607</p>
+        <p style="font-size: 9px; color: #999; margin-top: 8px; font-weight: 400;">Silakan screenshot atau simpan kode QRIS di atas</p>
+    </div>
+</div>
+
+<div class="amount-box animate-up" style="animation-delay: 0.3s;">
+    <p>Total Nominal Transfer</p>
+    <h2 id="displayNominal">Rp 0</h2>
+    <div class="copy-btn" id="btnCopy"><i class="ri-file-copy-line"></i> Salin Nominal</div>
+</div>
+
+<div class="instruction-list animate-up" style="animation-delay: 0.4s;">
+    <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-text">Screenshot halaman ini atau simpan QRIS di atas.</div>
+    </div>
+    <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-text">Buka aplikasi Dana, OVO, GoPay, atau M-Banking.</div>
+    </div>
+    <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-text">Pilih menu <b>Scan/QRIS</b> dan ambil dari galeri.</div>
+    </div>
+    <div class="step-item">
+        <div class="step-number">4</div>
+        <div class="step-text">Pastikan nominal sesuai: <b id="textNominal">Rp 0</b></div>
+    </div>
+</div>
+
+<div style="margin-top: 30px; text-align: center;" class="animate-up">
+    <p style="font-size: 10px; color: var(--text-muted);">Status akan diperbarui otomatis setelah pembayaran diverifikasi</p>
+    <a href="beranda.html" style="display: inline-block; margin-top: 15px; color: #555; font-size: 11px; text-decoration: none;">Kembali ke Beranda</a>
+</div>
+
+<script>
+    // 1. Logika Ambil Data Nominal dari Transaksi Terakhir
+    function getCurrentUser() {
+        const id = localStorage.getItem("currentUser");
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        return users.find(u => u.id === id);
+    }
+
+    const user = getCurrentUser();
+    const displayNominal = document.getElementById('displayNominal');
+    const textNominal = document.getElementById('textNominal');
+    let rawAmount = 0;
+
+    if (user && user.catatan) {
+        // Ambil transaksi deposit terbaru
+        const lastDeposit = user.catatan.filter(c => c.tipe === "deposit").pop();
+        
+        if (lastDeposit) {
+            rawAmount = lastDeposit.jumlahDeposit; 
+            const formatted = "Rp " + rawAmount.toLocaleString('id-ID');
+            displayNominal.innerText = formatted;
+            textNominal.innerText = formatted;
+        }
+    }
+
+    // 2. Fungsi Salin
+    document.getElementById('btnCopy').onclick = function() {
+        if (rawAmount > 0) {
+            navigator.clipboard.writeText(rawAmount);
+            this.innerHTML = '<i class="ri-check-line"></i> Tersalin';
+            setTimeout(() => {
+                this.innerHTML = '<i class="ri-file-copy-line"></i> Salin Nominal';
+            }, 2000);
+        }
+    };
+
+    // 3. Timer Countdown
+    let time = 899;
+    const countdownEl = document.getElementById('countdown');
+    const timerInterval = setInterval(() => {
+        let min = Math.floor(time / 60);
+        let sec = time % 60;
+        sec = sec < 10 ? '0' + sec : sec;
+        countdownEl.innerHTML = `${min}:${sec}`;
+        
+        if(time <= 0) {
+            clearInterval(timerInterval);
+            countdownEl.innerHTML = "EXPIRED";
+        }
+        time--;
+    }, 1000);
+</script>
+
+</body>
+</html>

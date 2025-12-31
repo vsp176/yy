@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VisionPay - Klaim Hadiah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-color: #0d0d0d;
+            --accent-color: #ff3b30;
+            --border-color: #1a1a1a;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --side-margin: 22px; 
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background-color: var(--bg-color); 
+            color: #ececec; 
+            font-family: var(--font-sans); 
+            padding-bottom: 50px;
+        }
+
+        .animate-up { opacity: 0; animation: fadeInUp 0.5s ease forwards; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px; 
+    
+
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    
+
+    background: #0a0a0a; 
+    
+    z-index: 1000; 
+    
+    border-bottom: 1px solid #151515; 
+}
+body { 
+    padding-top: 0px;
+    padding-bottom: 100px;
+}
+.header-icons a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+.header-icons .icon-vip {
+    color: var(--accent-color); /* Tetap merah untuk VIP */
+}
+.header-icons {
+    display: flex;
+    gap: 12px; /* Jarak antar tombol */
+    align-items: center;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background-color: #1a1a1a; /* Warna box bulat (sedikit lebih terang dari header) */
+    border-radius: 50%; /* Membuat jadi bulat sempurna */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.icon-box:active {
+    background-color: #252525; /* Efek saat ditekan */
+}
+
+.icon-box i {
+    font-size: 20px; /* Ukuran ikon di dalam box */
+    color: #ffffff;
+}
+
+        .container { padding: 100px var(--side-margin) 0 var(--side-margin); }
+
+        .hero-section { margin-bottom: 30px; }
+        .hero-section h1 { font-family: var(--font-serif); font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .hero-section p { font-size: 11px; color: #777; line-height: 1.6; }
+
+        /* CLAIM BOX */
+        .claim-card {
+            background: linear-gradient(145deg, #0d0d0d, #050505);
+            border: 1px solid var(--border-color);
+            padding: 25px 20px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 35px;
+        }
+        .claim-card::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
+            transform: skewX(-25deg); animation: shine 5s infinite;
+        }
+
+        .section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .section-title i { color: var(--accent-color); font-size: 18px; }
+        .section-title h3 { font-size: 14px; font-weight: 700; color: #fff; }
+
+        .bonus-input {
+            width: 100%; background: #000; border: 1px solid #222;
+            border-radius: 12px; padding: 16px; color: #fff;
+            font-size: 16px; font-weight: 600; text-align: center;
+            letter-spacing: 2px; text-transform: uppercase; outline: none;
+        }
+
+        .btn-claim {
+            width: 100%; background: var(--accent-color); color: #fff; border: none;
+            padding: 15px; border-radius: 12px; font-family: var(--font-serif);
+            font-weight: 700; font-size: 14px; margin-top: 15px; cursor: pointer;
+        }
+
+        /* INTRUKSI */
+        .instruction-list { margin-bottom: 40px; }
+        .ins-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; }
+        .ins-item i { color: var(--accent-color); font-size: 14px; margin-top: 2px; }
+        .ins-item p { font-size: 11px; color: #666; line-height: 1.5; }
+
+        /* TAB RIWAYAT */
+        .history-section { margin-top: 20px; }
+        .history-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px;
+        }
+        .hist-info h4 { font-size: 12px; color: #eee; margin-bottom: 4px; font-weight: 600; letter-spacing: 1px; }
+        .hist-info span { font-size: 10px; color: #444; }
+        
+        .hist-amount { text-align: right; }
+        .amount-val { font-size: 13px; color: #00ff88; font-weight: 700; display: block; margin-bottom: 4px; }
+        .status-label { font-size: 9px; color: #444; text-transform: uppercase; font-weight: 600; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="beranda.html">
+        <img src="logo.jpg" alt="VisionPay" style="height: 40px; width: auto; display: block;">
+    </a>
+    
+    <div class="header-icons">
+        <a href="vip.html" class="icon-box">
+            <i class="ri-vip-crown-fill"></i>
+        </a>
+        
+        <a href="customer-service.html" class="icon-box">
+            <i class="ri-customer-service-2-fill"></i>
+        </a>
+        
+        <a href="film.html" class="icon-box">
+            <i class="ri-video-line"></i>
+        </a>
+    </div>
+</header>
+
+    <div class="container">
+        
+        <div class="hero-section animate-up">
+            <h1>Klaim hadiah</h1>
+            <p>Tukarkan kode promo Anda untuk mendapatkan bonus saldo langsung ke dompet utama.</p>
+        </div>
+
+        <div class="claim-card animate-up delay-1">
+            <div class="section-title"><i class="ri-gift-line"></i><h3>Input Kode Bonus</h3></div>
+            <input type="text" class="bonus-input" placeholder="Ketik Kode" id="bonusCode">
+            <button class="btn-claim" onclick="processClaim()">Konfirmasi Kode</button>
+        </div>
+
+        <div class="instruction-list animate-up delay-2">
+            <div class="section-title"><i class="ri-information-line"></i><h3>Instruksi Klaim</h3></div>
+            <div class="ins-item">
+                <i class="ri-checkbox-circle-line"></i>
+                <p>Setiap kode hadiah hanya dapat diklaim satu kali oleh satu akun pengguna.</p>
+            </div>
+            <div class="ins-item">
+                <i class="ri-checkbox-circle-line"></i>
+                <p>Bonus akan langsung ditambahkan ke saldo akun setelah verifikasi sistem berhasil.</p>
+            </div>
+        </div>
+
+        <div class="history-section animate-up delay-3">
+            <div class="section-title"><i class="ri-history-line"></i><h3>Riwayat Klaim</h3></div>
+            
+            <div class="history-item">
+                <div class="hist-info">
+                    <h4>NEWYEAR2025</h4>
+                    <span>29 Des 2025, 20:15</span>
+                </div>
+                <div class="hist-amount">
+                    <span class="amount-val">+ Rp 50.000</span>
+                    <span class="status-label">Berhasil</span>
+                </div>
+            </div>
+
+            <div class="history-item">
+                <div class="hist-info">
+                    <h4>WELCOMEVIP</h4>
+                    <span>25 Des 2025, 14:10</span>
+                </div>
+                <div class="hist-amount">
+                    <span class="amount-val">+ Rp 25.000</span>
+                    <span class="status-label">Berhasil</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function processClaim() {
+            const code = document.getElementById('bonusCode').value;
+            if(code === "") {
+                alert("Masukkan kode terlebih dahulu.");
+            } else {
+                alert("Memproses kode: " + code);
+            }
+        }
+    </script>
+
+</body>
+</html>
